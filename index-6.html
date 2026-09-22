@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WE VERIFY EVERYTHING — Secure Identity Verification</title>
+<meta name="description" content="Fast, secure and reliable identity verification services for individuals and businesses.">
+<meta name="theme-color" content="#087443">
+<meta property="og:type" content="website">
+<meta property="og:title" content="WE VERIFY EVERYTHING — Secure Identity Verification">
+<meta property="og:description" content="Fast, secure and reliable identity verification services for individuals and businesses.">
+<meta property="og:site_name" content="WE VERIFY EVERYTHING">
+<meta property="og:locale" content="en_NG">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23087443'/%3E%3Cpath d='M16 6.5l7.5 2.8v5.9c0 4.8-3.2 8.4-7.5 10.3-4.3-1.9-7.5-5.5-7.5-10.3V9.3z' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linejoin='round'/%3E%3Cpath d='M12.6 15.6l2.4 2.4 4.4-4.8' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+/* ================= TOKENS ================= */
+:root{
+  --g:#087443;--g2:#0B8F55;--gl:#EAF7F0;--gl2:#D5EFE1;--w:#FFFFFF;--bg:#F7F9F8;--t:#17231D;--m:#6B7770;--b:#E4EAE6;--b2:#D3DCD6;
+  --warn:#9A5B06;--warnbg:#FDF4E3;--err:#B42318;--errbg:#FDEDEB;--info:#1D5C8F;--infobg:#EAF2FA;
+  --r:12px;--R:16px;--rs:8px;
+  --sh:0 1px 2px rgba(23,35,29,.05);
+  --sh2:0 20px 48px -20px rgba(23,35,29,.28);
+  --font:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --sb:248px;
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);color:var(--t);background:var(--bg);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01","tnum" 0}
+img,svg{display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--g2);outline-offset:2px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--m)}
+.view{display:none}
+.view.active{display:block}
+.ic{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.ic.sm{width:16px;height:16px}
+.ic.lg{width:24px;height:24px}
+
+/* ================= BUTTONS / FORMS ================= */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:10px;font-weight:600;font-size:14.5px;border:1px solid transparent;transition:background .15s,border-color .15s,transform .06s,box-shadow .15s;white-space:nowrap;text-align:center}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--g);color:#fff}
+.btn-primary:hover{background:#06633A}
+.btn-secondary{background:var(--w);border-color:var(--b2);color:var(--t)}
+.btn-secondary:hover{border-color:#A9B8AF;background:#FBFCFB}
+.btn-ghost{color:var(--t)}
+.btn-ghost:hover{background:var(--gl)}
+.btn-soft{background:var(--gl);color:var(--g)}
+.btn-soft:hover{background:var(--gl2)}
+.btn-danger{background:var(--w);border-color:#F1C4BF;color:var(--err)}
+.btn-danger:hover{background:var(--errbg)}
+.btn-sm{height:34px;padding:0 12px;font-size:13.5px;border-radius:8px}
+.btn-lg{height:52px;padding:0 24px;font-size:15.5px;border-radius:12px}
+.btn-block{width:100%}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.icon-btn{width:40px;height:40px;border-radius:10px;display:inline-grid;place-items:center;color:var(--t);position:relative}
+.icon-btn:hover{background:var(--gl)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.label{font-size:13.5px;font-weight:600;color:var(--t)}
+.field .hint{font-size:12.5px;color:var(--m)}
+.field .err{font-size:12.5px;color:var(--err);display:none}
+.field.invalid .err{display:block}
+.field.invalid .input{border-color:var(--err);box-shadow:0 0 0 3px var(--errbg)}
+.input,.select{height:44px;width:100%;padding:0 14px;border:1px solid var(--b2);border-radius:10px;background:var(--w);transition:border-color .15s,box-shadow .15s}
+.input:focus,.select:focus{outline:none;border-color:var(--g2);box-shadow:0 0 0 3px rgba(11,143,85,.14)}
+.input[readonly]{background:var(--bg);color:var(--m)}
+.select{appearance:none;-webkit-appearance:none;padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7770' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px}
+.input-icon{position:relative}
+.input-icon .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--m);pointer-events:none}
+.input-icon .input{padding-left:40px}
+.pw-wrap{position:relative}
+.pw-wrap .input{padding-right:46px}
+.pw-wrap .icon-btn{position:absolute;right:2px;top:2px;color:var(--m)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid .full{grid-column:1/-1}
+.switch{position:relative;width:40px;height:22px;flex:none}
+.switch input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1}
+.switch span{position:absolute;inset:0;background:#C9D3CD;border-radius:20px;transition:.15s}
+.switch span::after{content:"";position:absolute;width:18px;height:18px;left:2px;top:2px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.switch input:checked+span{background:var(--g)}
+.switch input:checked+span::after{transform:translateX(18px)}
+.switch input:focus-visible+span{outline:2px solid var(--g2);outline-offset:2px}
+
+/* ================= BADGES ================= */
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.b-success{background:var(--gl);color:var(--g)}
+.b-failed{background:var(--errbg);color:var(--err)}
+.b-pending{background:var(--warnbg);color:var(--warn)}
+.b-neutral{background:#EEF2EF;color:#4B5750}
+.b-info{background:var(--infobg);color:var(--info)}
+.demo-pill{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 11px;border:1px solid var(--b);border-radius:999px;font-size:12px;font-weight:600;color:var(--m);background:var(--w);letter-spacing:.02em}
+.demo-pill i{width:7px;height:7px;border-radius:50%;background:#E0A21B;box-shadow:0 0 0 3px #FDF1D6}
+
+/* ================= LOGO ================= */
+.logo{display:flex;align-items:center;gap:10px;font-weight:750;letter-spacing:.01em;font-size:14.5px}
+.logo svg{width:32px;height:32px}
+.logo small{display:block;font-weight:500;font-size:11.5px;color:var(--m);letter-spacing:0}
+
+/* ================= LANDING ================= */
+.container{width:100%;max-width:1180px;margin:0 auto;padding:0 24px}
+.site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--b);padding-top:env(safe-area-inset-top,0px)}
+.site-header .container{display:flex;align-items:center;height:68px;gap:24px}
+.site-nav{display:flex;gap:4px;margin-left:auto}
+.site-nav a{padding:8px 12px;border-radius:8px;font-size:14.5px;color:#39463F;font-weight:500}
+.site-nav a:hover{background:var(--gl);color:var(--g)}
+.header-cta{display:flex;gap:8px;align-items:center}
+.menu-toggle{display:none}
+.mobile-nav{display:none;border-top:1px solid var(--b);background:#fff;padding:12px 24px 20px}
+.mobile-nav.open{display:block}
+.mobile-nav a{display:block;padding:12px 4px;border-bottom:1px solid var(--b);font-weight:500}
+.mobile-nav .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+
+.hero{background:#fff;border-bottom:1px solid var(--b);overflow:hidden}
+.hero .container{display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center;padding-top:80px;padding-bottom:88px}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--g);font-weight:600;background:var(--gl);padding:6px 12px 6px 8px;border-radius:999px;margin-bottom:24px}
+.hero-kicker .ic{width:16px;height:16px}
+.hero h1{font-size:clamp(40px,5.6vw,68px);line-height:1.02;letter-spacing:-.035em;font-weight:700;max-width:14ch}
+.hero p.lead{font-size:18.5px;color:#4A5750;max-width:46ch;margin-top:22px;line-height:1.6}
+.hero .actions{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}
+.hero-meta{display:flex;gap:28px;margin-top:44px;padding-top:28px;border-top:1px solid var(--b);flex-wrap:wrap}
+.hero-meta div{font-size:13.5px;color:var(--m)}
+.hero-meta strong{display:block;font-size:20px;color:var(--t);font-weight:650;letter-spacing:-.01em}
+
+/* hero mockup */
+.mock{position:relative;padding:28px 0 28px 28px}
+.mock-stage{position:absolute;inset:0 -200px 0 0;background:var(--gl);border-radius:24px 0 0 24px}
+.mock-stage svg{position:absolute;right:120px;top:-60px;width:520px;height:520px;opacity:.55}
+.vcard{position:relative;background:#fff;border:1px solid var(--b);border-radius:var(--R);box-shadow:var(--sh2);max-width:440px;overflow:hidden}
+.vcard-top{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--b)}
+.vcard-top .t{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--m)}
+.vcard-body{padding:22px}
+.vcard-status{display:flex;align-items:center;gap:14px}
+.seal{width:48px;height:48px;border-radius:50%;background:var(--g);display:grid;place-items:center;color:#fff;flex:none;box-shadow:0 0 0 6px var(--gl)}
+.seal .ic{width:24px;height:24px;stroke-width:2.4}
+.vcard-status h3{font-size:17px;font-weight:650;letter-spacing:-.01em}
+.vcard-status p{font-size:13.5px;color:var(--m)}
+.vcard-person{display:flex;gap:16px;align-items:center;margin:22px 0 18px;padding:16px;background:var(--bg);border-radius:var(--r)}
+.demo-photo{width:64px;height:76px;border-radius:8px;background:repeating-linear-gradient(135deg,#E3EAE6 0 6px,#EDF2EF 6px 12px);border:1px dashed #B8C6BD;display:grid;place-items:center;text-align:center;font-size:9.5px;font-weight:700;color:#6B7770;letter-spacing:.06em;line-height:1.25;flex:none}
+.vcard-person .name{font-size:19px;font-weight:650;letter-spacing:-.015em}
+.vcard-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+.kv>span{display:block;font-size:12px;color:var(--m)}
+.kv strong{font-size:14.5px;font-weight:600}
+.vcard-foot{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-top:1px solid var(--b);background:#FBFCFB;font-size:12.5px;color:var(--m)}
+.live{display:inline-flex;align-items:center;gap:7px}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--g2);box-shadow:0 0 0 0 rgba(11,143,85,.5);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(11,143,85,.45)}70%{box-shadow:0 0 0 8px rgba(11,143,85,0)}100%{box-shadow:0 0 0 0 rgba(11,143,85,0)}}
+.float-chip{position:absolute;background:#fff;border:1px solid var(--b);border-radius:12px;box-shadow:0 12px 28px -14px rgba(23,35,29,.3);padding:12px 14px;display:flex;align-items:center;gap:12px;font-size:13px}
+.float-chip .ico{width:34px;height:34px;border-radius:9px;background:var(--gl);color:var(--g);display:grid;place-items:center}
+.float-chip strong{display:block;font-size:15px;font-weight:650}
+.float-chip span{color:var(--m);font-size:12px}
+.chip-wallet{right:-8px;bottom:96px}
+.chip-debit{right:18px;bottom:-4px}
+
+.section{padding:96px 0}
+.section.alt{background:#fff;border-top:1px solid var(--b);border-bottom:1px solid var(--b)}
+.section-head{max-width:640px;margin-bottom:48px}
+.section-head h2{font-size:clamp(28px,3.4vw,40px);line-height:1.12;letter-spacing:-.025em;font-weight:680}
+.section-head p{color:var(--m);font-size:17px;margin-top:12px;max-width:56ch}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.section-head.center p{margin-left:auto;margin-right:auto}
+
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--b);border-radius:var(--R);background:#fff;overflow:hidden}
+.trust-item{padding:28px 26px;border-right:1px solid var(--b)}
+.trust-item:last-child{border-right:0}
+.trust-item .ico{width:40px;height:40px;border-radius:10px;background:var(--gl);color:var(--g);display:grid;place-items:center;margin-bottom:18px}
+.trust-item h3{font-size:17px;font-weight:650;margin-bottom:6px}
+.trust-item p{color:var(--m);font-size:14.5px}
+
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.price-card{background:#fff;border:1px solid var(--b);border-radius:var(--R);padding:28px;display:flex;flex-direction:column;position:relative}
+.price-card.featured{border-color:var(--g);box-shadow:0 0 0 1px var(--g)}
+.price-card .tag{position:absolute;top:-12px;left:28px;background:var(--g);color:#fff;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px}
+.price-card h3{font-size:18px;font-weight:650}
+.price-card .desc{color:var(--m);font-size:14.5px;margin-top:4px}
+.price-card .amt{font-size:44px;font-weight:700;letter-spacing:-.03em;margin:26px 0 4px;line-height:1}
+.price-card .amt small{font-size:14px;color:var(--m);font-weight:500;letter-spacing:0;margin-left:4px}
+.price-card ul{list-style:none;padding:0;margin:22px 0 28px;display:grid;gap:10px;font-size:14.5px}
+.price-card li{display:flex;gap:10px;align-items:flex-start}
+.price-card li .ic{color:var(--g);width:18px;height:18px;margin-top:2px}
+.price-card .btn{margin-top:auto}
+.price-note{margin-top:20px;font-size:13.5px;color:var(--m);display:flex;gap:8px;align-items:center}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;counter-reset:s}
+.step{padding:0 24px 0 0;position:relative}
+.step .n{font-size:13px;font-weight:700;color:var(--g);letter-spacing:.04em;display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.step .n::after{content:"";flex:1;height:1px;background:var(--b2)}
+.step:last-child .n::after{background:transparent}
+.step .ico{width:48px;height:48px;border-radius:12px;border:1px solid var(--b);background:#fff;color:var(--g);display:grid;place-items:center;margin-bottom:18px}
+.step h3{font-size:17px;font-weight:650}
+.step p{color:var(--m);font-size:14.5px;margin-top:6px;max-width:30ch}
+
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b);border:1px solid var(--b);border-radius:var(--R);overflow:hidden}
+.feat{background:#fff;padding:26px}
+.feat .ic{color:var(--g);margin-bottom:14px}
+.feat h3{font-size:15.5px;font-weight:650}
+.feat p{font-size:14px;color:var(--m);margin-top:4px}
+
+.sec-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.sec-list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sec-item{display:flex;gap:14px;padding:18px;border:1px solid var(--b);border-radius:var(--r);background:#fff}
+.sec-item .ico{width:36px;height:36px;border-radius:9px;background:var(--gl);color:var(--g);display:grid;place-items:center;flex:none}
+.sec-item h3{font-size:15px;font-weight:650}
+.sec-item p{font-size:13.5px;color:var(--m);margin-top:2px}
+.sec-note{font-size:13px;color:var(--m);margin-top:18px}
+
+.faq{max-width:780px;margin:0 auto;border-top:1px solid var(--b)}
+.faq details{border-bottom:1px solid var(--b)}
+.faq summary{list-style:none;cursor:pointer;padding:20px 4px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .ic{transition:transform .2s;color:var(--m)}
+.faq details[open] summary .ic{transform:rotate(180deg)}
+.faq details p{padding:0 4px 20px;color:#4A5750;max-width:68ch}
+
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.contact-card{background:#fff;border:1px solid var(--b);border-radius:var(--R);padding:32px}
+.contact-card.primary{background:var(--g);color:#fff;border-color:var(--g)}
+.contact-card.primary .muted{color:rgba(255,255,255,.75)}
+.contact-row{display:flex;gap:14px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--b)}
+.contact-row:last-child{border-bottom:0}
+.contact-row .ico{width:40px;height:40px;border-radius:10px;background:var(--gl);color:var(--g);display:grid;place-items:center;flex:none}
+.contact-row span{display:block;font-size:13px;color:var(--m)}
+.contact-row strong{font-size:16px;font-weight:600}
+.btn-wa{background:#fff;color:var(--g)}
+.btn-wa:hover{background:var(--gl)}
+.btn-outline-w{border-color:rgba(255,255,255,.4);color:#fff}
+.btn-outline-w:hover{background:rgba(255,255,255,.1)}
+
+.site-footer{background:#0E2A1C;color:#C9D8CF;padding:64px 0 calc(28px + env(safe-area-inset-bottom,0px))}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
+.site-footer .logo{color:#fff}
+.site-footer .logo small{color:#9DB3A6}
+.site-footer h4{color:#fff;font-size:14px;font-weight:600;margin-bottom:14px}
+.site-footer ul{list-style:none;padding:0;display:grid;gap:10px;font-size:14.5px}
+.site-footer a:hover{color:#fff}
+.footer-bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:48px;padding-top:22px;border-top:1px solid rgba(255,255,255,.1);font-size:13.5px;color:#9DB3A6}
+.footer-bottom .links{display:flex;gap:20px}
+.footer-bottom button{color:#C9D8CF;font-size:13.5px}
+.footer-bottom button:hover{color:#fff}
+
+/* ================= AUTH ================= */
+.auth{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:#fff}
+.auth-brand{background:var(--g);color:#fff;padding:48px 56px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.auth-brand svg.rings{position:absolute;right:-180px;bottom:-180px;width:560px;height:560px;opacity:.14}
+.auth-brand .logo{color:#fff}
+.auth-brand .logo small{color:rgba(255,255,255,.72)}
+.auth-brand h2{font-size:clamp(30px,3.2vw,42px);line-height:1.1;letter-spacing:-.03em;font-weight:680;margin-top:auto;max-width:14ch}
+.auth-brand p{color:rgba(255,255,255,.8);margin-top:16px;max-width:40ch;font-size:16px}
+.auth-brand ul{list-style:none;padding:0;margin:32px 0 0;display:grid;gap:12px;font-size:14.5px}
+.auth-brand li{display:flex;gap:10px;align-items:center}
+.auth-brand li .ic{width:18px;height:18px}
+.auth-brand .foot{margin-top:48px;font-size:13px;color:rgba(255,255,255,.6)}
+.auth-main{display:flex;flex-direction:column;padding:32px 48px}
+.auth-top{display:flex;justify-content:space-between;align-items:center}
+.auth-form{width:100%;max-width:420px;margin:auto;padding:40px 0}
+.auth-form h1{font-size:28px;letter-spacing:-.025em;font-weight:680}
+.auth-form .sub{color:var(--m);margin-top:6px;margin-bottom:28px}
+.auth-form form{display:grid;gap:16px}
+.auth-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px}
+.check{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.check input{width:16px;height:16px;accent-color:var(--g)}
+.link{color:var(--g);font-weight:600}
+.link:hover{text-decoration:underline}
+.demo-access{margin-top:28px;border:1px solid var(--b);border-radius:var(--r);overflow:hidden}
+.demo-access .hd{padding:12px 16px;background:var(--bg);font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--b)}
+.demo-acct{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--b)}
+.demo-acct:last-child{border-bottom:0}
+.demo-acct .who{flex:1;min-width:0}
+.demo-acct strong{font-size:14px}
+.demo-acct code{display:block;font-family:inherit;font-size:12.5px;color:var(--m);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.divider{display:flex;align-items:center;gap:12px;color:var(--m);font-size:12.5px;margin:4px 0}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--b)}
+
+/* ================= APP SHELL ================= */
+.app{display:grid;grid-template-columns:var(--sb) 1fr;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:#fff;border-right:1px solid var(--b);display:flex;flex-direction:column;padding:18px 14px calc(14px + env(safe-area-inset-bottom,0px));padding-top:calc(18px + env(safe-area-inset-top,0px));z-index:60}
+.sidebar .logo{padding:2px 8px 18px}
+.sb-scroll{flex:1;overflow-y:auto;margin:0 -6px;padding:0 6px}
+.sb-group{margin-top:12px}
+.sidebar.compact .nav-item{height:34px;font-size:14px}
+.sidebar.compact .sb-group{margin-top:9px}
+.sidebar.compact .sb-label{padding-bottom:4px}
+.sb-group:first-child{margin-top:4px}
+.sb-label{font-size:11.5px;font-weight:600;color:#8A968F;padding:0 10px 6px;letter-spacing:.02em}
+.nav-item{position:relative;display:flex;align-items:center;gap:12px;width:100%;height:38px;padding:0 10px;border-radius:9px;font-size:14.5px;font-weight:500;color:#3B4842;text-align:left}
+.nav-item .ic{color:#76837C}
+.nav-item:hover{background:var(--bg);color:var(--t)}
+.nav-item.active{background:var(--gl);color:var(--g);font-weight:600}
+.nav-item.active .ic{color:var(--g)}
+.nav-item.active::before{content:"";position:absolute;left:-14px;top:9px;bottom:9px;width:3px;border-radius:0 3px 3px 0;background:var(--g)}
+.nav-item .count{margin-left:auto;background:var(--g);color:#fff;font-size:11px;font-weight:700;border-radius:999px;min-width:20px;height:20px;display:grid;place-items:center;padding:0 6px}
+.sb-foot{border-top:1px solid var(--b);padding-top:12px;margin-top:8px}
+.sb-user{display:flex;gap:10px;align-items:center;padding:4px 4px 0 10px}
+.sb-user .icon-btn{margin-left:auto;color:var(--m)}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--gl);color:var(--g);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.avatar.admin{background:#0E2A1C;color:#fff}
+.sb-user .n{font-size:14px;font-weight:600;line-height:1.2}
+.sb-user .e{font-size:12px;color:var(--m);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px}
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(247,249,248,.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--b);padding-top:env(safe-area-inset-top,0px)}
+.topbar-in{display:flex;align-items:center;gap:12px;height:64px;padding:0 32px}
+.crumbs{display:flex;align-items:center;gap:6px;font-size:13.5px;color:var(--m);min-width:0}
+.crumbs .ic{width:14px;height:14px}
+.crumbs strong{color:var(--t);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.dot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:#D64532;border:2px solid var(--bg)}
+.sb-toggle{display:none}
+.hide-xs{display:contents}
+.content{padding:32px;max-width:1280px;width:100%;margin:0 auto;flex:1}
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.page-head h1{font-size:26px;font-weight:680;letter-spacing:-.025em;line-height:1.2}
+.page-head p{color:var(--m);margin-top:4px}
+.page-head .actions{display:flex;gap:10px;flex-wrap:wrap}
+.overlay{position:fixed;inset:0;background:rgba(14,42,28,.36);z-index:55;display:none}
+.overlay.show{display:block}
+.bottom-nav{display:none}
+
+/* cards */
+.card{background:#fff;border:1px solid var(--b);border-radius:var(--R);box-shadow:var(--sh)}
+.card-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--b);flex-wrap:wrap}
+.card-hd h2,.card-hd h3{font-size:16px;font-weight:650}
+.card-hd p{font-size:13px;color:var(--m)}
+.card-bd{padding:22px}
+.grid{display:grid;gap:20px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g-main{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+.mt{margin-top:20px}
+.stat{padding:20px 22px}
+.stat .l{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--m);font-weight:500}
+.stat .l .ic{width:17px;height:17px;color:var(--g)}
+.stat .v{font-size:28px;font-weight:700;letter-spacing:-.025em;margin-top:10px;line-height:1.1}
+.stat .d{font-size:12.5px;color:var(--m);margin-top:6px;display:flex;align-items:center;gap:6px}
+.up{color:var(--g);font-weight:600}
+.stat-hero{background:var(--g);color:#fff;border-color:var(--g);position:relative;overflow:hidden}
+.stat-hero .l,.stat-hero .d{color:rgba(255,255,255,.8)}
+.stat-hero .l .ic{color:#fff}
+.stat-hero svg.rings{position:absolute;right:-90px;top:-90px;width:260px;height:260px;opacity:.14}
+.stat-hero .btn{margin-top:16px;position:relative}
+
+/* table */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+.t th{text-align:left;font-size:12.5px;font-weight:600;color:var(--m);padding:12px 22px;background:#FBFCFB;border-bottom:1px solid var(--b);white-space:nowrap}
+.t td{padding:14px 22px;border-bottom:1px solid var(--b);vertical-align:middle;white-space:nowrap}
+.t tr:last-child td{border-bottom:0}
+.t tbody tr:hover td{background:#FBFCFB}
+.t .ref{font-weight:600}
+.t .r{text-align:right}
+.credit{color:var(--g);font-weight:650}
+.debit{color:var(--t);font-weight:600}
+.cell-user{display:flex;align-items:center;gap:10px}
+.cell-user .avatar{width:32px;height:32px;font-size:12px}
+.cell-user small{display:block;color:var(--m);font-size:12.5px}
+.toolbar{display:flex;gap:10px;padding:16px 22px;border-bottom:1px solid var(--b);flex-wrap:wrap;align-items:center}
+.toolbar .input-icon{flex:1 1 220px;min-width:180px}
+.toolbar .select,.toolbar .input{height:40px;width:auto;min-width:140px}
+.toolbar .input-icon .input{width:100%}
+.empty{padding:48px 22px;text-align:center;color:var(--m)}
+.empty .ico{width:48px;height:48px;border-radius:12px;background:var(--bg);display:grid;place-items:center;margin:0 auto 12px;color:var(--m)}
+.empty strong{display:block;color:var(--t);font-size:15px;margin-bottom:4px}
+.table-foot{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-top:1px solid var(--b);font-size:13px;color:var(--m)}
+
+/* list rows */
+.list-row{display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid var(--b)}
+.list-row:last-child{border-bottom:0}
+.list-row .ico{width:38px;height:38px;border-radius:10px;background:var(--bg);display:grid;place-items:center;color:var(--m);flex:none}
+.list-row .ico.g{background:var(--gl);color:var(--g)}
+.list-row .grow{flex:1;min-width:0}
+.list-row .grow strong{display:block;font-size:14.5px;font-weight:600}
+.list-row .grow span{font-size:13px;color:var(--m)}
+
+/* verify flow */
+.stepper{display:flex;gap:0;margin-bottom:24px;background:#fff;border:1px solid var(--b);border-radius:var(--r);overflow:hidden}
+.stepper li{list-style:none;flex:1;display:flex;align-items:center;gap:10px;padding:14px 18px;font-size:14px;color:var(--m);font-weight:500;border-right:1px solid var(--b)}
+.stepper li:last-child{border-right:0}
+.stepper li b{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--b2);display:grid;place-items:center;font-size:12.5px;font-weight:700;flex:none;background:#fff}
+.stepper li.done{color:var(--t)}
+.stepper li.done b{background:var(--g);border-color:var(--g);color:#fff}
+.stepper li.current{color:var(--g);font-weight:600;background:var(--gl)}
+.stepper li.current b{border-color:var(--g);color:var(--g)}
+.stepper ol{display:contents}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.svc{position:relative;text-align:left;border:1.5px solid var(--b);border-radius:var(--r);padding:18px;background:#fff;transition:border-color .15s,background .15s;display:flex;flex-direction:column;gap:2px}
+.svc:hover{border-color:#A9C9B7}
+.svc .radio{position:absolute;right:16px;top:16px;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--b2);display:grid;place-items:center}
+.svc strong{font-size:15.5px;font-weight:650}
+.svc span.d{font-size:13px;color:var(--m)}
+.svc .p{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-top:14px}
+.svc[aria-checked="true"]{border-color:var(--g);background:#F5FBF8;box-shadow:0 0 0 3px rgba(8,116,67,.08)}
+.svc[aria-checked="true"] .radio{border-color:var(--g);background:var(--g)}
+.svc[aria-checked="true"] .radio::after{content:"";width:8px;height:8px;background:#fff;border-radius:50%}
+.nin-input{height:56px;font-size:20px;letter-spacing:.14em;font-weight:600;font-variant-numeric:tabular-nums}
+.nin-input::placeholder{letter-spacing:.08em;font-weight:400;color:#A3AFA8}
+.summary-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px dashed var(--b);font-size:14.5px}
+.summary-row:last-child{border-bottom:0}
+.summary-row span{color:var(--m)}
+.summary-row strong{font-weight:600}
+.summary-row.total strong{font-size:18px}
+.note{display:flex;gap:10px;padding:12px 14px;border-radius:10px;background:var(--bg);font-size:13.5px;color:#4A5750;align-items:flex-start}
+.note .ic{width:18px;height:18px;color:var(--g);margin-top:1px}
+.note.warn{background:var(--warnbg);color:var(--warn)}
+.note.warn .ic{color:var(--warn)}
+
+/* result */
+.result{overflow:hidden}
+.result-banner{display:flex;align-items:center;gap:16px;padding:22px 26px;background:var(--gl);border-bottom:1px solid var(--gl2)}
+.result-banner h2{font-size:13px;letter-spacing:.08em;font-weight:700;color:var(--g)}
+.result-banner p{font-size:14px;color:#3D5A4A}
+.demo-flag{display:flex;align-items:center;gap:8px;padding:10px 26px;background:var(--warnbg);color:var(--warn);font-size:12.5px;font-weight:700;letter-spacing:.04em;border-bottom:1px solid #F4E2BF}
+.demo-flag .ic{width:16px;height:16px}
+.result-body{display:grid;grid-template-columns:auto 1fr;gap:28px;padding:26px}
+.result-body .demo-photo{width:120px;height:148px;font-size:12px;border-radius:10px}
+.result-name{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 24px;margin-top:18px}
+.result-grid .kv strong{font-size:15px}
+.result-foot{display:flex;gap:10px;justify-content:flex-end;padding:18px 26px;border-top:1px solid var(--b);background:#FBFCFB;flex-wrap:wrap}
+
+/* wallet */
+.wallet-card{background:#0E2A1C;color:#fff;border-radius:var(--R);padding:28px;position:relative;overflow:hidden}
+.wallet-card svg.rings{position:absolute;right:-120px;top:-120px;width:380px;height:380px;opacity:.12}
+.wallet-card .l{font-size:14px;color:rgba(255,255,255,.72)}
+.wallet-card .v{font-size:42px;font-weight:700;letter-spacing:-.03em;margin-top:6px;line-height:1.1}
+.va-box{margin-top:28px;display:grid;grid-template-columns:repeat(3,auto);gap:24px;justify-content:start;padding-top:22px;border-top:1px solid rgba(255,255,255,.14)}
+.va-box span{display:block;font-size:12.5px;color:rgba(255,255,255,.6)}
+.va-box strong{font-size:17px;font-weight:600;letter-spacing:.02em}
+.wallet-card .actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;position:relative}
+.btn-on-dark{background:#fff;color:#0E2A1C}
+.btn-on-dark:hover{background:var(--gl)}
+.btn-dark-outline{border-color:rgba(255,255,255,.3);color:#fff}
+.btn-dark-outline:hover{background:rgba(255,255,255,.08)}
+.acct-box{border:1px solid var(--b);border-radius:var(--r);overflow:hidden}
+.acct-box .row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--b);gap:12px}
+.acct-box .row:last-child{border-bottom:0}
+.acct-box .row span{font-size:13px;color:var(--m)}
+.acct-box .row strong{font-weight:600;text-align:right}
+.acct-box .big{font-size:22px;letter-spacing:.06em}
+
+/* charts */
+.chart{width:100%;height:auto}
+.chart text{font-family:var(--font);font-size:12px;fill:#8A968F}
+.legend{display:flex;gap:16px;font-size:12.5px;color:var(--m)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* tabs */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--b);padding:0 22px;overflow-x:auto}
+.tab{padding:12px 12px;font-size:14px;font-weight:500;color:var(--m);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab:hover{color:var(--t)}
+.tab[aria-selected="true"]{color:var(--g);border-color:var(--g);font-weight:600}
+
+/* status cards */
+.status-tile{padding:18px 20px;border:1px solid var(--b);border-radius:var(--r);background:#fff}
+.status-tile>span{font-size:13px;color:var(--m);display:block}
+.status-tile strong{font-size:16px;font-weight:650;display:flex;align-items:center;gap:8px;margin-top:6px}
+.health{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--g2);box-shadow:0 0 0 4px var(--gl)}
+.settings-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 22px;border-bottom:1px solid var(--b)}
+.settings-row:last-child{border-bottom:0}
+.settings-row strong{display:block;font-size:14.5px;font-weight:600}
+.settings-row span{font-size:13px;color:var(--m)}
+
+/* skeleton */
+.sk{background:linear-gradient(90deg,#EEF2EF 25%,#F6F8F7 50%,#EEF2EF 75%);background-size:200% 100%;animation:sk 1.2s infinite;border-radius:6px;height:14px}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ================= MODAL ================= */
+.modal-root{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-root.open{display:flex}
+.modal-back{position:absolute;inset:0;background:rgba(14,42,28,.42);animation:fade .15s}
+.modal{position:relative;background:#fff;border-radius:var(--R);width:100%;max-width:480px;max-height:calc(100vh - 40px);display:flex;flex-direction:column;box-shadow:0 30px 60px -20px rgba(14,42,28,.4);animation:pop .18s ease-out}
+.modal.wide{max-width:760px}
+.modal.xwide{max-width:920px}
+.modal-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:22px 24px 0}
+.modal-hd h2{font-size:19px;font-weight:680;letter-spacing:-.015em}
+.modal-hd p{color:var(--m);font-size:14px;margin-top:2px}
+.modal-bd{padding:20px 24px;overflow-y:auto}
+.modal-ft{display:flex;gap:10px;align-items:center;justify-content:flex-end;padding:16px 24px 22px;border-top:1px solid var(--b)}
+.modal-ft.split{justify-content:space-between}
+@keyframes fade{from{opacity:0}}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.985)}}
+.proc{text-align:center;padding:12px 0 4px}
+.spinner{width:56px;height:56px;margin:0 auto 18px;border-radius:50%;border:3px solid var(--gl);border-top-color:var(--g);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.proc-steps{list-style:none;padding:0;margin:22px auto 0;display:grid;gap:10px;text-align:left;max-width:300px}
+.proc-steps li{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--m);transition:color .2s}
+.proc-steps li i{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--b2);display:grid;place-items:center;flex:none}
+.proc-steps li.on{color:var(--t)}
+.proc-steps li.on i{border-color:var(--g);background:var(--g);color:#fff}
+.proc-steps li.on i .ic{width:12px;height:12px;stroke-width:3}
+.success-mark{width:64px;height:64px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;margin:4px auto 16px;box-shadow:0 0 0 8px var(--gl)}
+.success-mark .ic{width:30px;height:30px;stroke-width:2.4}
+
+/* ================= TOAST ================= */
+.toasts{position:fixed;right:20px;bottom:20px;z-index:200;display:grid;gap:10px;width:min(360px,calc(100vw - 40px));padding-bottom:env(safe-area-inset-bottom,0px)}
+.toast{display:flex;gap:12px;align-items:flex-start;background:#0E2A1C;color:#fff;padding:14px 16px;border-radius:12px;box-shadow:0 16px 32px -12px rgba(14,42,28,.45);font-size:14px;animation:tin .22s ease-out}
+.toast .ti{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--g2)}
+.toast .ti .ic{width:13px;height:13px;stroke-width:3}
+.toast.warn .ti{background:#D99413}
+.toast.err .ti{background:#D64532}
+.toast.info .ti{background:#3A6F9A}
+.toast strong{display:block;font-weight:600}
+.toast span{color:rgba(255,255,255,.72);font-size:13px}
+.toast.out{animation:tout .2s ease-in forwards}
+@keyframes tin{from{opacity:0;transform:translateY(10px)}}
+@keyframes tout{to{opacity:0;transform:translateY(6px)}}
+
+/* tooltip */
+[data-tip]{position:relative}
+[data-tip]:hover::after,[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#0E2A1C;color:#fff;font-size:12px;font-weight:500;padding:5px 8px;border-radius:6px;white-space:nowrap;z-index:80;pointer-events:none}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:1100px){
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .feat-grid{grid-template-columns:repeat(2,1fr)}
+  .result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:980px){
+  .site-nav,.header-cta .hide-m{display:none}
+  .menu-toggle{display:inline-grid;margin-left:auto}
+  .header-cta{margin-left:0}
+  .hero .container{grid-template-columns:1fr;gap:48px;padding-top:48px;padding-bottom:56px}
+  .mock{padding:24px 0 24px 16px;max-width:520px}
+  .chip-wallet{display:none}
+  .trust-grid{grid-template-columns:1fr 1fr}
+  .trust-item:nth-child(2){border-right:0}
+  .trust-item:nth-child(-n+2){border-bottom:1px solid var(--b)}
+  .price-grid{grid-template-columns:1fr;max-width:480px}
+  .steps{grid-template-columns:1fr 1fr;gap:36px 0}
+  .sec-wrap,.contact-wrap{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .auth{grid-template-columns:1fr}
+  .auth-brand{display:none}
+  .auth-main{padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px))}
+  .app{grid-template-columns:1fr}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;width:280px;height:100%;transform:translateX(-100%);transition:transform .22s ease;box-shadow:none}
+  .sidebar.open{transform:none;box-shadow:0 0 40px rgba(14,42,28,.25)}
+  .sb-toggle{display:inline-grid}
+  .topbar-in{padding:0 16px}
+  .content{padding:24px 16px}
+  .g-main,.g3{grid-template-columns:1fr}
+  .g3.keep2{grid-template-columns:1fr 1fr}
+}
+@media (max-width:720px){
+  body{font-size:15px}
+  .container{padding:0 20px}
+  .section{padding:64px 0}
+  .section-head{margin-bottom:32px}
+  .hero-meta{gap:20px}
+  .trust-grid{grid-template-columns:1fr}
+  .trust-item{border-right:0;border-bottom:1px solid var(--b)}
+  .trust-item:last-child{border-bottom:0}
+  .steps{grid-template-columns:1fr;gap:28px}
+  .step .n::after{display:none}
+  .feat-grid{grid-template-columns:1fr}
+  .sec-list{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .g2,.g4{grid-template-columns:1fr}
+  .g4.keep2{grid-template-columns:1fr 1fr}
+  .g4.keep2 .stat,.g3.keep2 .stat{padding:16px}
+  .g3.keep2 .stat .v{font-size:22px}
+  .chart text{font-size:19px}
+  .g4.keep2 .stat .v{font-size:22px}
+  .page-head h1{font-size:22px}
+  .page-head .actions{width:100%}
+  .page-head .actions .btn{flex:1}
+  .stepper li{padding:12px 8px;justify-content:center;font-size:0;gap:0}
+  .stepper li.current{font-size:13px;gap:8px;flex:2}
+  .svc-grid{grid-template-columns:1fr}
+  .svc{flex-direction:row;align-items:center;gap:14px;padding:16px}
+  .svc .p{margin:0 36px 0 auto;font-size:20px}
+  .result-body{grid-template-columns:1fr;gap:18px}
+  .result-body .demo-photo{width:96px;height:118px}
+  .result-grid{grid-template-columns:1fr 1fr}
+  .result-foot .btn{flex:1}
+  .va-box{grid-template-columns:1fr 1fr}
+  .wallet-card .v{font-size:34px}
+  .wallet-card .actions .btn{flex:1}
+  .demo-pill .txt{display:none}
+  .hide-xs{display:none}
+  .demo-pill{padding:0 9px}
+  /* responsive tables -> cards */
+  table.rt thead{display:none}
+  table.rt,table.rt tbody,table.rt tr,table.rt td{display:block;width:100%}
+  table.rt tr{padding:14px 16px;border-bottom:1px solid var(--b)}
+  table.rt tr:last-child{border-bottom:0}
+  table.rt td{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:5px 0;border:0;white-space:normal;text-align:right}
+  table.rt td::before{content:attr(data-label);font-size:12.5px;color:var(--m);font-weight:500;text-align:left}
+  table.rt td.r{text-align:right}
+  table.rt td[data-label=""]::before{display:none}
+  table.rt td.act{justify-content:flex-end;padding-top:10px}
+  table.rt tbody tr:hover td{background:none}
+  .toolbar{padding:14px 16px}
+  .toolbar .select,.toolbar .input{flex:1 1 40%;min-width:0}
+  .card-hd,.card-bd{padding-left:16px;padding-right:16px}
+  .list-row,.settings-row{padding-left:16px;padding-right:16px}
+  .tabs{padding:0 12px}
+  .modal-root{padding:0;align-items:flex-end}
+  .modal{max-width:none!important;border-radius:18px 18px 0 0;max-height:92vh;padding-bottom:env(safe-area-inset-bottom,0px);animation:sheet .22s ease-out}
+  @keyframes sheet{from{transform:translateY(40px);opacity:.6}}
+  .modal-ft .btn{flex:1}
+  .toasts{left:20px;right:20px;width:auto;bottom:84px}
+  .has-bottom-nav .content{padding-bottom:96px}
+  .bottom-nav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:#fff;border-top:1px solid var(--b);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+  .bottom-nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;font-size:11px;font-weight:600;color:#76837C;border-radius:10px}
+  .bottom-nav button.active{color:var(--g)}
+  .bottom-nav button.primary .bi{width:44px;height:30px;border-radius:10px;background:var(--g);color:#fff;display:grid;place-items:center}
+  .bottom-nav.hide{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+</style>
+</head>
+<body>
+<a href="#main" class="sr-only">Skip to content</a>
+
+<!-- ============================ LANDING PAGE ============================ -->
+<div id="view-landing" class="view active">
+  <header class="site-header">
+    <div class="container">
+      <a href="#top" class="logo" aria-label="WE VERIFY EVERYTHING home" data-logo><span data-site="name">WE VERIFY EVERYTHING</span></a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="#top">Home</a>
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#how">How It Works</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="header-cta">
+        <button class="btn btn-ghost hide-m" data-action="go-login">Login</button>
+        <button class="btn btn-primary hide-m" data-action="go-register">Create Account</button>
+      </div>
+      <button class="icon-btn menu-toggle" data-action="toggle-mobile-nav" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><i data-icon="menu"></i></button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+      <a href="#top" data-close-nav>Home</a>
+      <a href="#services" data-close-nav>Services</a>
+      <a href="#pricing" data-close-nav>Pricing</a>
+      <a href="#how" data-close-nav>How It Works</a>
+      <a href="#faq" data-close-nav>FAQ</a>
+      <a href="#contact" data-close-nav>Contact</a>
+      <div class="btns">
+        <button class="btn btn-secondary" data-action="go-login">Login</button>
+        <button class="btn btn-primary" data-action="go-register">Create Account</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <div>
+          <span class="hero-kicker"><i data-icon="shieldCheck"></i>Identity verification for Nigeria</span>
+          <h1 data-site="heroTitle">Verify. Trust. Move Forward.</h1>
+          <p class="lead" data-site="heroCopy">Fast, secure and reliable identity verification services designed for businesses and individuals.</p>
+          <div class="actions">
+            <button class="btn btn-primary btn-lg" data-action="go-login">Start Verification <i data-icon="arrowRight"></i></button>
+            <a href="#services" class="btn btn-secondary btn-lg">View Services</a>
+          </div>
+          <div class="hero-meta">
+            <div><strong class="num">From <span data-price="basic">₦170</span></strong>per verification</div>
+            <div><strong>Wallet-based</strong>pay as you go</div>
+            <div><strong>Instant</strong>downloadable report</div>
+          </div>
+        </div>
+        <div class="mock" aria-label="Product preview: a completed NIN verification">
+          <div class="mock-stage" aria-hidden="true"><svg class="rings" data-rings="#087443"></svg></div>
+          <article class="vcard">
+            <div class="vcard-top">
+              <span class="t">NIN VERIFICATION</span>
+              <span class="badge b-success">Verified</span>
+            </div>
+            <div class="vcard-body">
+              <div class="vcard-status">
+                <div class="seal"><i data-icon="check"></i></div>
+                <div>
+                  <h3>Verification Successful</h3>
+                  <p>Record matched and report generated</p>
+                </div>
+              </div>
+              <div class="vcard-person">
+                <div class="demo-photo" aria-label="Demo photo placeholder">DEMO<br>PHOTO</div>
+                <div>
+                  <div class="name">John Ibrahim</div>
+                  <div class="muted" style="font-size:13.5px">Basic NIN Slip</div>
+                </div>
+              </div>
+              <div class="vcard-grid">
+                <div class="kv"><span>NIN</span><strong class="num">1234 •••• ••••</strong></div>
+                <div class="kv"><span>Status</span><strong style="color:var(--g)">Verified</strong></div>
+                <div class="kv" style="grid-column:1/-1"><span>Verification Reference</span><strong class="num">WV-2026-000184</strong></div>
+              </div>
+            </div>
+            <div class="vcard-foot"><span class="live"><i></i>Verified just now</span><span>Demo preview</span></div>
+          </article>
+          <div class="float-chip chip-wallet" aria-hidden="true">
+            <div class="ico"><i data-icon="wallet"></i></div>
+            <div><span>Wallet Balance</span><strong class="num">₦2,280.00</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="trust">
+      <div class="container">
+        <div class="section-head">
+          <h2>Built for fast, reliable verification</h2>
+          <p>A straightforward way to verify identity records, pay per request and keep a clear record of every result.</p>
+        </div>
+        <div class="trust-grid">
+          <div class="trust-item"><div class="ico"><i data-icon="lock"></i></div><h3>Secure</h3><p>Your verification activity is handled through a secure platform.</p></div>
+          <div class="trust-item"><div class="ico"><i data-icon="zap"></i></div><h3>Fast</h3><p>Get verification results quickly through an intuitive workflow.</p></div>
+          <div class="trust-item"><div class="ico"><i data-icon="eye"></i></div><h3>Transparent</h3><p>See wallet balance, verification charges and transaction history.</p></div>
+          <div class="trust-item"><div class="ico"><i data-icon="layers"></i></div><h3>Simple</h3><p>Designed so anyone can complete verification without confusion.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="services">
+      <div class="container">
+        <div class="section-head" id="pricing">
+          <h2>Verification Services</h2>
+          <p>Choose the level of detail you need. The fee is deducted from your wallet only when you confirm a verification.</p>
+        </div>
+        <div class="price-grid" id="landingPrices"></div>
+        <p class="price-note"><i data-icon="help" class="sm"></i>Prices shown are demonstration prices and are managed by the administrator.</p>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="container">
+        <div class="section-head">
+          <h2>How it works</h2>
+          <p>Four steps from sign-up to a downloadable verification result.</p>
+        </div>
+        <ol class="steps" style="padding:0">
+          <li class="step" style="list-style:none"><div class="n">01</div><div class="ico"><i data-icon="userPlus"></i></div><h3>Create Account</h3><p>Sign up with your email and phone number in under a minute.</p></li>
+          <li class="step" style="list-style:none"><div class="n">02</div><div class="ico"><i data-icon="bank"></i></div><h3>Fund Your Wallet</h3><p>Transfer to your dedicated virtual account. Your wallet updates automatically.</p></li>
+          <li class="step" style="list-style:none"><div class="n">03</div><div class="ico"><i data-icon="verify"></i></div><h3>Enter NIN &amp; Select Service</h3><p>Pick Basic, Standard or Premium and enter the 11-digit NIN.</p></li>
+          <li class="step" style="list-style:none"><div class="n">04</div><div class="ico"><i data-icon="file"></i></div><h3>Receive Verification Result</h3><p>View the result on screen, then download or print the report.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section alt" id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2>Everything you need, nothing you don't</h2>
+        </div>
+        <div class="feat-grid">
+          <div class="feat"><i data-icon="zap"></i><h3>Instant verification workflow</h3><p>Select, enter, confirm. Results appear in seconds.</p></div>
+          <div class="feat"><i data-icon="wallet"></i><h3>Wallet-based payments</h3><p>Pay per verification from a prepaid balance.</p></div>
+          <div class="feat"><i data-icon="bank"></i><h3>Virtual account funding</h3><p>Your own account number for bank transfers.</p></div>
+          <div class="feat"><i data-icon="history"></i><h3>Verification history</h3><p>Search and reopen any past verification.</p></div>
+          <div class="feat"><i data-icon="download"></i><h3>Downloadable reports</h3><p>Save or print a clean report for your records.</p></div>
+          <div class="feat"><i data-icon="phone"></i><h3>Mobile responsive</h3><p>Works on any phone, tablet or computer.</p></div>
+          <div class="feat"><i data-icon="lock"></i><h3>Secure account access</h3><p>Protected sign-in and role-based access.</p></div>
+          <div class="feat"><i data-icon="tag"></i><h3>Transparent pricing</h3><p>The fee is shown before you confirm, every time.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="security">
+      <div class="container sec-wrap">
+        <div class="section-head" style="margin-bottom:0">
+          <h2>Designed With Security in Mind</h2>
+          <p>The production platform is planned around careful handling of identity data and payments, with every action traceable.</p>
+          <p class="sec-note">These describe the planned production architecture. This presentation prototype uses demo data only.</p>
+        </div>
+        <div class="sec-list">
+          <div class="sec-item"><div class="ico"><i data-icon="lock"></i></div><div><h3>Secure Authentication</h3><p>Hashed passwords and protected sessions.</p></div></div>
+          <div class="sec-item"><div class="ico"><i data-icon="users"></i></div><div><h3>Role-Based Access</h3><p>Separate user and administrator permissions.</p></div></div>
+          <div class="sec-item"><div class="ico"><i data-icon="transactions"></i></div><div><h3>Transaction Tracking</h3><p>Every credit and debit is recorded.</p></div></div>
+          <div class="sec-item"><div class="ico"><i data-icon="audit"></i></div><div><h3>Audit Logging</h3><p>Administrative changes are logged.</p></div></div>
+          <div class="sec-item"><div class="ico"><i data-icon="shieldCheck"></i></div><div><h3>Protected Verification Data</h3><p>Sensitive fields masked by default.</p></div></div>
+          <div class="sec-item"><div class="ico"><i data-icon="link"></i></div><div><h3>Payment Webhook Verification</h3><p>Funding notices are signature-checked.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="faq">
+      <div class="container">
+        <div class="section-head center"><h2>Frequently asked questions</h2></div>
+        <div class="faq">
+          <details><summary>How do I fund my wallet?<i data-icon="chevronDown"></i></summary><p>After you create an account you receive a dedicated virtual account number. Transfer any amount from ₦100 upward and your wallet balance updates automatically.</p></details>
+          <details><summary>When am I charged for a verification?<i data-icon="chevronDown"></i></summary><p>The fee is shown on a confirmation screen before anything happens. Your wallet is only debited after you choose Confirm &amp; Verify.</p></details>
+          <details><summary>What is the difference between Basic, Standard and Premium?<i data-icon="chevronDown"></i></summary><p>Basic confirms core identity details. Standard adds location and contact details. Premium produces the most detailed report layout.</p></details>
+          <details><summary>Can I withdraw money from my wallet?<i data-icon="chevronDown"></i></summary><p>No. Wallet funds can only be used for verification services on the platform.</p></details>
+          <details><summary>Can I download my verification result?<i data-icon="chevronDown"></i></summary><p>Yes. Every result can be downloaded as a PDF or printed, and stays available in your verification history.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="section-head"><h2>Contact Us</h2><p>Questions about verification, pricing or business accounts? Reach us directly.</p></div>
+        <div class="contact-wrap">
+          <div class="contact-card">
+            <div class="contact-row"><div class="ico"><i data-icon="mapPin"></i></div><div><span>Address</span><strong data-site="address">Emir Yahaya, Sokoto</strong></div></div>
+            <div class="contact-row"><div class="ico"><i data-icon="phone"></i></div><div><span>Phone</span><strong class="num" data-site="phone">08142685961</strong></div></div>
+            <div class="contact-row"><div class="ico"><i data-icon="whatsapp"></i></div><div><span>WhatsApp</span><strong class="num" data-site="whatsapp">08142685961</strong></div></div>
+          </div>
+          <div class="contact-card primary" style="display:flex;flex-direction:column">
+            <h3 style="font-size:24px;letter-spacing:-.02em;font-weight:680">Talk to us now</h3>
+            <p class="muted" style="margin-top:8px;max-width:38ch">We usually respond on WhatsApp within working hours, Monday to Saturday.</p>
+            <div style="display:grid;gap:10px;margin-top:auto;padding-top:28px">
+              <a class="btn btn-lg btn-wa" data-site-href="wa" href="https://wa.me/2348142685961" target="_blank" rel="noopener"><i data-icon="whatsapp"></i>Chat on WhatsApp</a>
+              <a class="btn btn-lg btn-outline-w" data-site-href="tel" href="tel:08142685961"><i data-icon="phone"></i>Call Us <span class="num" data-site="phone">08142685961</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo" data-logo="dark"><span data-site="name">WE VERIFY EVERYTHING</span></div>
+          <p style="margin-top:14px;max-width:30ch">Fast. Secure. Verified.</p>
+        </div>
+        <div><h4>Product</h4><ul><li><a href="#services">Services</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#how">How It Works</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li></ul></div>
+        <div><h4>Address</h4><ul><li data-site="address">Emir Yahaya, Sokoto</li></ul></div>
+        <div><h4>Phone</h4><ul><li><a href="tel:08142685961" data-site-href="tel" class="num" data-site="phone">08142685961</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 <span data-site="name">WE VERIFY EVERYTHING</span>. All rights reserved.</span>
+        <div class="links"><button data-action="privacy">Privacy Policy</button><button data-action="terms">Terms of Service</button></div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================ AUTH (LOGIN / REGISTER) ============================ -->
+<div id="view-auth" class="view">
+  <div class="auth">
+    <aside class="auth-brand">
+      <svg class="rings" data-rings="#ffffff" aria-hidden="true"></svg>
+      <div class="logo" data-logo="light"><span data-site="name">WE VERIFY EVERYTHING</span></div>
+      <h2>Identity verification you can rely on.</h2>
+      <p>Fund your wallet, verify a NIN and download the result, all from one dashboard.</p>
+      <ul>
+        <li><i data-icon="check"></i>Clear fees before every verification</li>
+        <li><i data-icon="check"></i>Dedicated virtual account for funding</li>
+        <li><i data-icon="check"></i>Full history of results and transactions</li>
+      </ul>
+      <div class="foot">Presentation prototype. All records shown are demo data.</div>
+    </aside>
+    <div class="auth-main">
+      <div class="auth-top">
+        <button class="btn btn-ghost btn-sm" data-action="go-home"><i data-icon="arrowLeft" class="sm"></i>Back to website</button>
+        <span class="demo-pill"><i></i><span class="txt">DEMO MODE</span></span>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="auth-form" id="loginPane">
+        <h1>Sign in</h1>
+        <p class="sub">Welcome back. Enter your details to continue.</p>
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="loginEmail">Email address</label>
+            <input class="input" id="loginEmail" type="email" autocomplete="username" placeholder="you@example.com" required>
+          </div>
+          <div class="field">
+            <label for="loginPass">Password</label>
+            <div class="pw-wrap">
+              <input class="input" id="loginPass" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+              <button type="button" class="icon-btn" data-action="toggle-pw" data-target="loginPass" aria-label="Show password"><i data-icon="eye"></i></button>
+            </div>
+            <span class="err" id="loginErr">Email or password is incorrect. Use one of the demo accounts below.</span>
+          </div>
+          <div class="auth-row">
+            <label class="check"><input type="checkbox" checked> Keep me signed in</label>
+            <button type="button" class="link" data-action="demo" data-msg="Password reset emails are part of the production build.">Forgot password?</button>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Sign in</button>
+          <p style="text-align:center;font-size:14px" class="muted">New here? <button type="button" class="link" data-action="go-register">Create an account</button></p>
+        </form>
+        <div class="demo-access">
+          <div class="hd"><span>Demo Access</span><span class="muted" style="font-weight:500">Tap to open</span></div>
+          <div class="demo-acct">
+            <div class="avatar">JI</div>
+            <div class="who"><strong>User Demo</strong><code>user@weverifyeverything.test</code><code>User@123</code></div>
+            <button class="btn btn-soft btn-sm" data-action="demo-login" data-role="user">Open User Demo</button>
+          </div>
+          <div class="demo-acct">
+            <div class="avatar admin">AD</div>
+            <div class="who"><strong>Admin Demo</strong><code>admin@weverifyeverything.test</code><code>Admin@123</code></div>
+            <button class="btn btn-soft btn-sm" data-action="demo-login" data-role="admin">Open Admin Demo</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- REGISTER -->
+      <div class="auth-form" id="registerPane" hidden>
+        <h1>Create your account</h1>
+        <p class="sub">You'll get a dedicated virtual account for wallet funding.</p>
+        <form id="registerForm" novalidate>
+          <div class="field">
+            <label for="regName">Full name</label>
+            <input class="input" id="regName" autocomplete="name" placeholder="e.g. Aisha Bello" required>
+            <span class="err">Enter your full name.</span>
+          </div>
+          <div class="field">
+            <label for="regEmail">Email address</label>
+            <input class="input" id="regEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+            <span class="err">Enter a valid email address that isn't already registered.</span>
+          </div>
+          <div class="field">
+            <label for="regPhone">Phone number</label>
+            <input class="input" id="regPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0803 000 0000" required>
+            <span class="err">Enter an 11-digit Nigerian phone number.</span>
+          </div>
+          <div class="field">
+            <label for="regPass">Password</label>
+            <div class="pw-wrap">
+              <input class="input" id="regPass" type="password" autocomplete="new-password" placeholder="At least 8 characters" required>
+              <button type="button" class="icon-btn" data-action="toggle-pw" data-target="regPass" aria-label="Show password"><i data-icon="eye"></i></button>
+            </div>
+            <span class="err">Use at least 8 characters.</span>
+          </div>
+          <label class="check" style="font-size:13.5px"><input type="checkbox" id="regTerms"> I agree to the&nbsp;<button type="button" class="link" data-action="terms">Terms of Service</button></label>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Create Account</button>
+          <p style="text-align:center;font-size:14px" class="muted">Already have an account? <button type="button" class="link" data-action="go-login">Sign in</button></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ APPLICATION SHELL (USER + ADMIN) ============================ -->
+<div id="view-app" class="view">
+  <div class="app" id="appShell">
+    <aside class="sidebar" id="sidebar" aria-label="Application navigation">
+      <div class="logo" data-logo><span data-site="name">WE VERIFY EVERYTHING</span></div>
+      <nav class="sb-scroll" id="sideNav"></nav>
+      <div class="sb-foot">
+        <div class="sb-user"><div id="sbUser" style="display:flex;gap:10px;align-items:center;min-width:0;flex:1"></div><button class="icon-btn" data-action="logout" aria-label="Logout" title="Logout"><i data-icon="logout"></i></button></div>
+      </div>
+    </aside>
+    <div class="overlay" id="sbOverlay" data-action="close-sidebar"></div>
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-in">
+          <button class="icon-btn sb-toggle" data-action="open-sidebar" aria-label="Open navigation"><i data-icon="menu"></i></button>
+          <div class="crumbs" id="crumbs"></div>
+          <div class="right">
+            <span class="demo-pill" data-tip="All data in this prototype is fictional"><i></i><span class="txt">DEMO MODE</span></span>
+            <button class="icon-btn" data-action="help" aria-label="Help" data-tip="Help"><i data-icon="help"></i></button>
+            <button class="icon-btn" data-action="open-notifs" aria-label="Notifications" data-tip="Notifications"><i data-icon="bell"></i><span class="dot" id="notifDot" hidden></span></button>
+          </div>
+        </div>
+      </header>
+      <main class="content" id="main" tabindex="-1"></main>
+    </div>
+  </div>
+  <nav class="bottom-nav" id="bottomNav" aria-label="Quick navigation"></nav>
+</div>
+
+<!-- ============================ MODALS ============================ -->
+<div class="modal-root" id="modalRoot" aria-hidden="true">
+  <div class="modal-back" data-action="close-modal"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"></div>
+</div>
+
+<!-- ============================ TOASTS ============================ -->
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+<script>
+/* =====================================================================
+   WE VERIFY EVERYTHING — Presentation prototype
+   All data below is fictional demo data. No real NIN records.
+   ===================================================================== */
+(function(){
+'use strict';
+
+/* ---------------------------- ICONS ---------------------------- */
+const ICONS={
+  dashboard:'<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>',
+  verify:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5.8 16c.6-1.4 1.8-2.1 3.2-2.1s2.6.7 3.2 2.1"/><path d="M14.5 11.5l1.6 1.6 3-3.2"/>',
+  wallet:'<path d="M19 7V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H5"/><path d="M16.5 13.5h.01" stroke-width="2.5"/>',
+  transactions:'<path d="M7 4v16M4 17l3 3 3-3M17 20V4M14 7l3-3 3 3"/>',
+  history:'<path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1L3.5 8.5"/><path d="M3.5 3.5v5h5"/><path d="M12 7.5V12l3 2"/>',
+  download:'<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+  userPlus:'<circle cx="10" cy="8" r="4"/><path d="M2.5 21c1.4-3.8 4.2-5.8 7.5-5.8 1.6 0 3 .4 4.3 1.3M19 14v6M16 17h6"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.8.7 3 2.5 3.5 5.2"/>',
+  bell:'<path d="M6 8.5a6 6 0 1 1 12 0c0 6.5 2.5 8 2.5 8h-17S6 15 6 8.5"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  settings:'<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>',
+  api:'<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>',
+  card:'<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19M6 15h4"/>',
+  reports:'<path d="M3 21h18"/><rect x="5" y="11" width="3" height="7" rx=".5"/><rect x="10.5" y="5" width="3" height="13" rx=".5"/><rect x="16" y="8" width="3" height="10" rx=".5"/>',
+  audit:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/>',
+  logout:'<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l5-5-5-5M15 12H3"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+  eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  eyeOff:'<path d="M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-2.4 3.3M6.6 6.6C3.7 8.4 2 12 2 12s3.5 7 10 7c1.8 0 3.4-.5 4.8-1.3M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  alert:'<path d="M12 3.5l9.5 16.5h-19L12 3.5z"/><path d="M12 10v4M12 17v.01"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/>',
+  arrowRight:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  arrowLeft:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  copy:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
+  lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  shield:'<path d="M12 3l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-3z"/>',
+  shieldCheck:'<path d="M12 3l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-3z"/><path d="M9 12l2 2 4-4.5"/>',
+  help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.4 2.3c-.6.3-.9.8-.9 1.4V14M12 17v.01"/>',
+  menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  phone:'<path d="M5 4h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.1 6.1l1.4-2.3L20 15.5V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+  mapPin:'<path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+  zap:'<path d="M13 2.5L4.5 14H11l-1 7.5L19.5 10H13l0-7.5z"/>',
+  layers:'<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/>',
+  bank:'<path d="M3 9.5L12 4l9 5.5M5 10v8M9.7 10v8M14.3 10v8M19 10v8M3 21h18"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  edit:'<path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/>',
+  printer:'<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>',
+  filter:'<path d="M4 5h16l-6 8v6l-4-2v-4L4 5z"/>',
+  activity:'<path d="M3 12h4l3-8 4 16 3-8h4"/>',
+  server:'<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01" stroke-width="2.5"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/>',
+  tag:'<path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1.5"/>',
+  box:'<path d="M3 7.5l9-4.5 9 4.5v9L12 21l-9-4.5v-9z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/>',
+  refresh:'<path d="M20 11a8 8 0 0 0-14.3-4.9L3.5 8.5M3.5 4v4.5H8M4 13a8 8 0 0 0 14.3 4.9l2.2-2.4M20.5 20v-4.5H16"/>',
+  chevronDown:'<path d="M6 9l6 6 6-6"/>',
+  chevronRight:'<path d="M9 6l6 6-6 6"/>',
+  whatsapp:'<path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8.1 19.5l-4.6 1z"/><path d="M9 8.3c-.4 2.9 3.5 7 6.7 6.6l.8-1.6-2-1-1 .8c-1.1-.4-2.3-1.6-2.7-2.7l.8-1-1-2-1.6.9z"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+  key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14.5 8.5l2 2"/>',
+  link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  file:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  trendUp:'<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
+  ban:'<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
+  send:'<path d="M21 3L10 14M21 3l-7 18-4-7-7-4 18-7z"/>'
+};
+const icon=(n,cls='')=>`<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICONS[n]||''}</svg>`;
+function hydrateIcons(root=document){root.querySelectorAll('i[data-icon]').forEach(el=>{el.outerHTML=icon(el.dataset.icon,el.className)})}
+function logoSvg(v){
+  const bg=v==='light'?'#FFFFFF':v==='dark'?'#0B8F55':'#087443', fg=v==='light'?'#087443':'#FFFFFF';
+  return `<svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="${bg}"/><path d="M16 6.5l7.5 2.8v5.9c0 4.8-3.2 8.4-7.5 10.3-4.3-1.9-7.5-5.5-7.5-10.3V9.3z" fill="none" stroke="${fg}" stroke-width="1.8" stroke-linejoin="round"/><path d="M12.6 15.6l2.4 2.4 4.4-4.8" fill="none" stroke="${fg}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+function ringsSvg(color){let c='';for(let r=24;r<=260;r+=16)c+=`<circle cx="260" cy="260" r="${r}"/>`;return `<g fill="none" stroke="${color}" stroke-width="1">${c}</g>`}
+function hydrateDecor(root=document){
+  root.querySelectorAll('[data-logo]').forEach(el=>{if(el.querySelector('svg'))return;el.insertAdjacentHTML('afterbegin',logoSvg(el.dataset.logo))});
+  root.querySelectorAll('svg[data-rings]').forEach(el=>{el.setAttribute('viewBox','0 0 520 520');el.innerHTML=ringsSvg(el.dataset.rings)});
+}
+
+/* ---------------------------- DEMO DATABASE / STATE ---------------------------- */
+const STORAGE_KEY='wve_demo_state_v1';
+const PEOPLE=[
+  {name:'John Ibrahim',dob:'12 March 1995',gender:'Male',state:'Sokoto',lga:'Sokoto North',phone:'0803 ••• ••••'},
+  {name:'Aisha Musa',dob:'4 July 1998',gender:'Female',state:'Kebbi',lga:'Birnin Kebbi',phone:'0806 ••• ••••'},
+  {name:'Emeka Nwosu',dob:'23 January 1990',gender:'Male',state:'Enugu',lga:'Nsukka',phone:'0813 ••• ••••'},
+  {name:'Halima Yusuf',dob:'9 November 1993',gender:'Female',state:'Kano',lga:'Nassarawa',phone:'0708 ••• ••••'},
+  {name:'Samuel Adebayo',dob:'30 May 1987',gender:'Male',state:'Oyo',lga:'Ibadan North',phone:'0816 ••• ••••'},
+  {name:'Blessing Okon',dob:'17 August 1996',gender:'Female',state:'Akwa Ibom',lga:'Uyo',phone:'0905 ••• ••••'},
+  {name:'Yusuf Danladi',dob:'2 February 1992',gender:'Male',state:'Sokoto',lga:'Wamako',phone:'0802 ••• ••••'},
+  {name:'Ngozi Eze',dob:'14 December 1989',gender:'Female',state:'Anambra',lga:'Awka South',phone:'0817 ••• ••••'}
+];
+function personForNin(nin){if(nin==='12345678901')return PEOPLE[0];let s=0;for(const c of nin)s+=+c;return PEOPLE[1+(s%(PEOPLE.length-1))]}
+const pad=n=>String(n).padStart(2,'0');
+const isoOf=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+
+function seedState(){
+  let seed=11;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const products={
+    basic:{id:'basic',name:'Basic NIN Slip',short:'Basic',desc:'Quick identity verification',providerCost:120,customerPrice:170,status:'Active'},
+    standard:{id:'standard',name:'Standard NIN Slip',short:'Standard',desc:'Detailed identity verification',providerCost:180,customerPrice:250,status:'Active'},
+    premium:{id:'premium',name:'Premium NIN Slip',short:'Premium',desc:'Enhanced verification report',providerCost:250,customerPrice:350,status:'Active'}
+  };
+  const U=(id,name,email,phone,balance,status,joined,va)=>({id,name,email,phone,balance,status,joined,va,password:'Demo@123'});
+  const users=[
+    Object.assign(U('u1','John Ibrahim','user@weverifyeverything.test','0803 123 4567',2450,'Active','2026-08-14T10:12:00','0123456789'),{password:'User@123'}),
+    U('u2','Amina Bello','amina.bello@example.com','0806 222 1034',5200,'Active','2026-06-02T09:30:00','0123456790'),
+    U('u3','Chinedu Okafor','chinedu.okafor@example.com','0813 440 9921',850,'Active','2026-06-19T15:02:00','0123456791'),
+    U('u4','Fatima Usman','fatima.usman@example.com','0708 551 2210',0,'Suspended','2026-07-01T11:47:00','0123456792'),
+    U('u5','Tunde Adeyemi','tunde.adeyemi@example.com','0816 903 4477',12400,'Active','2026-07-11T08:21:00','0123456793'),
+    U('u6','Grace Eze','grace.eze@example.com','0905 118 6620',3100,'Active','2026-07-28T13:40:00','0123456794'),
+    U('u7','Musa Abdullahi','musa.abdullahi@example.com','0802 774 0193',640,'Active','2026-08-09T17:05:00','0123456795'),
+    U('u8','Kemi Johnson','kemi.johnson@example.com','0817 330 5586',7750,'Active','2026-08-22T12:18:00','0123456796'),
+    U('u9','Ibrahim Sani','ibrahim.sani@example.com','0703 612 8841',150,'Active','2026-09-03T10:55:00','0123456797'),
+    U('u10','Zainab Garba','zainab.garba@example.com','0814 205 7732',2000,'Active','2026-09-18T16:33:00','0123456798')
+  ];
+  const johnRefs=new Set([184,177,173,169,166,162,158,155,151,148,146,143,141,139,138,137,136,135]);
+  const others=['u2','u3','u5','u6','u7','u8','u9','u10','u2','u5','u8'];
+  const cycle=['basic','basic','standard','basic','premium','basic','standard','basic','basic','standard'];
+  const base=new Date(2026,8,22,14,42,3);
+  const verifications=[];
+  for(let i=0;i<50;i++){
+    const r=184-i;
+    const d=new Date(base.getTime()-i*3*3600e3-(i?Math.floor(rnd()*50)*60e3:0));
+    const userId=johnRefs.has(r)?'u1':others[Math.floor(rnd()*others.length)];
+    const product=r===184?'basic':r===177?'standard':cycle[i%cycle.length];
+    const nin=r===184?'12345678901':r===177?'98765432109':String(Math.floor(rnd()*8.8e10)+1.1e10);
+    const failed=r===158||(userId!=='u1'&&rnd()<.07);
+    const pr=products[product];
+    verifications.push({ref:'WV-2026-'+String(r).padStart(6,'0'),userId,product,nin,amount:pr.customerPrice,cost:pr.providerCost,status:failed?'Failed':'Successful',charged:!failed,date:isoOf(d),person:failed?null:Object.assign({},personForNin(nin)),duration:+(0.9+rnd()*1.1).toFixed(2)});
+  }
+  const transactions=[];let tid=1;
+  const tx=(userId,date,desc,ref,type,amount)=>transactions.push({id:'t'+(tid++),userId,date,desc,ref,type,amount,status:'Successful'});
+  let debit=0;
+  verifications.forEach(v=>{if(v.charged){tx(v.userId,v.date,`NIN ${S_short(products,v.product)} Verification`,v.ref,'debit',v.amount);if(v.userId==='u1')debit+=v.amount}});
+  tx('u1','2026-09-15T09:05:00','Wallet Funding','FND-2609150905','credit',4000);
+  tx('u1','2026-09-20T10:15:00','Wallet Funding','FND-2609201015','credit',2450+debit-4000);
+  ['u2','u3','u5','u6','u7','u8','u9','u10'].forEach((u,k)=>tx(u,`2026-09-${pad(8+k)}T1${k}:20:00`,'Wallet Funding','FND-26090'+(k+1)+'1'+k+'20','credit',[5000,2000,15000,4000,1500,10000,1000,2000][k]));
+  transactions.sort((a,b)=>b.date.localeCompare(a.date));
+  const notifications=[
+    {id:'n1',userId:'u1',title:'Verification Successful',body:'Your NIN verification WV-2026-000184 was completed.',date:'2026-09-22T14:42:05',read:false,type:'verify'},
+    {id:'n2',userId:'u1',title:'Wallet Funded',body:'₦1,000 was added to your wallet.',date:'2026-09-20T10:15:00',read:false,type:'wallet'},
+    {id:'n3',userId:'u1',title:'Welcome',body:'Your WE VERIFY EVERYTHING account is ready.',date:'2026-08-14T10:12:00',read:true,type:'welcome'}
+  ];
+  const apiLogs=verifications.slice(0,16).map(v=>({time:v.date,ref:v.ref,product:v.product,code:v.status==='Successful'?200:404,status:v.status==='Successful'?'Success':'No record',duration:v.duration}));
+  const audit=[
+    {admin:'Admin',action:'Updated Basic NIN Price',resource:'Verification Product',ip:'192.168.1.10',time:'2026-09-22T14:41:00',status:'Successful'},
+    {admin:'Admin',action:'Signed in to admin console',resource:'Admin Session',ip:'192.168.1.10',time:'2026-09-22T14:30:12',status:'Successful'},
+    {admin:'Admin',action:'Suspended user Fatima Usman',resource:'User Account',ip:'192.168.1.10',time:'2026-09-21T16:05:44',status:'Successful'},
+    {admin:'Admin',action:'Tested payment webhook',resource:'Payment Settings',ip:'192.168.1.10',time:'2026-09-21T11:20:09',status:'Successful'},
+    {admin:'Unknown',action:'Failed sign-in attempt',resource:'Admin Session',ip:'102.89.33.7',time:'2026-09-20T23:14:51',status:'Failed'},
+    {admin:'Admin',action:'Updated API request timeout',resource:'API Integration',ip:'192.168.1.10',time:'2026-09-19T09:48:30',status:'Successful'}
+  ];
+  return {
+    v:1,session:null,nextRef:185,products,users,verifications,transactions,notifications,apiLogs,audit,broadcasts:[],
+    site:{name:'WE VERIFY EVERYTHING',tagline:'Fast. Secure. Verified.',phone:'08142685961',whatsapp:'08142685961',address:'Emir Yahaya, Sokoto',heroTitle:'Verify. Trust. Move Forward.',heroCopy:'Fast, secure and reliable identity verification services designed for businesses and individuals.'},
+    api:{baseUrl:'https://api.nin-provider.example/v2',key:'pk_live_demo_7F3K9Q2LM4',secret:'sk_live_demo_A81XW0PZ55R',timeout:'30',env:'Production',lastTest:'2026-09-22T14:40:00'},
+    pay:{lastWebhook:'2026-09-22T14:40:00',provider:'Demo Payments Ltd',vaService:'Demo Bank Virtual Accounts'},
+    admin:{name:'Admin',email:'admin@weverifyeverything.test',password:'Admin@123',twofa:true,timeout:'30'},
+    prefs:{},
+    stats:{totalUsers:1284,todayVerif:342,todayRevenue:58140,apiCost:41040,walletFunding:126500,
+      week:{vol:[288,301,276,319,334,298],rev:[48960,51170,46920,54230,56780,50660],cost:[34560,36120,33120,38280,40080,35760],fund:[98000,112500,87000,131000,119500,104000]}}
+  };
+}
+function S_short(p,id){return p[id]?p[id].short:id}
+let S;
+function load(){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const d=JSON.parse(raw);if(d&&d.v===1)return d}}catch(e){}return seedState()}
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(S))}catch(e){}}
+S=load();
+
+/* ---------------------------- UTILITIES ---------------------------- */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const naira=(n,dec)=>'₦'+Number(n).toLocaleString('en-NG',{minimumFractionDigits:dec?2:0,maximumFractionDigits:dec?2:0});
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const toDate=s=>{const m=String(s).match(/(\d+)-(\d+)-(\d+)T?(\d+)?:?(\d+)?:?(\d+)?/);return m?new Date(+m[1],m[2]-1,+m[3],+(m[4]||0),+(m[5]||0),+(m[6]||0)):new Date(s)};
+const fmtDate=s=>{const d=toDate(s);return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`};
+const fmtTime=s=>{const d=toDate(s);return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
+const fmtTimeS=s=>{const d=toDate(s);return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`};
+const fmtDT=s=>`${fmtDate(s)}, ${fmtTime(s)}`;
+const nowIso=()=>isoOf(new Date());
+const maskNin=n=>String(n).slice(0,4)+'•••••••';
+const initials=n=>String(n).trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+function greeting(){const h=new Date().getHours();return h<12?'Good morning':h<17?'Good afternoon':'Good evening'}
+function ago(s){const diff=(Date.now()-toDate(s).getTime())/1000;if(diff<0||diff>86400*2)return fmtDT(s);if(diff<60)return 'just now';if(diff<3600)return Math.floor(diff/60)+' min ago';if(diff<86400)return Math.floor(diff/3600)+' hr ago';return 'yesterday'}
+const statusBadge=s=>{const m={Successful:'b-success',Success:'b-success',Active:'b-success',Verified:'b-success',Healthy:'b-success',Failed:'b-failed','No record':'b-failed',Suspended:'b-failed',Pending:'b-pending',Inactive:'b-neutral'};return `<span class="badge ${m[s]||'b-neutral'}">${esc(s)}</span>`};
+const me=()=>S.session&&S.session.role==='user'?S.users.find(u=>u.id===S.session.userId):null;
+const userById=id=>S.users.find(u=>u.id===id);
+const activeProducts=()=>Object.values(S.products).filter(p=>p.status==='Active');
+function audit(action,resource,status='Successful'){S.audit.unshift({admin:S.admin.name||'Admin',action,resource,ip:'192.168.1.10',time:nowIso(),status})}
+function notify(userId,title,body,type){S.notifications.unshift({id:'n'+Date.now()+Math.floor(Math.random()*999),userId,title,body,date:nowIso(),read:false,type})}
+function copyText(t){
+  const ok=()=>toast('Account number copied',t,'success');
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(ok,()=>fallback())}else fallback();
+  function fallback(){const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}ta.remove();ok()}
+}
+function downloadFile(name,content,type){const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+
+/* ---------------------------- TOASTS ---------------------------- */
+function toast(title,msg='',kind='success'){
+  const el=document.createElement('div');el.className='toast '+(kind==='success'?'':kind);
+  const ic=kind==='success'?'check':kind==='info'?'info':'alert';
+  el.innerHTML=`<span class="ti">${icon(ic)}</span><div><strong>${esc(title)}</strong>${msg?`<span>${esc(msg)}</span>`:''}</div>`;
+  $('#toasts').appendChild(el);
+  setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),220)},3200);
+}
+const demoToast=(msg)=>toast('Demo feature',msg||'This action is simulated in the presentation prototype.','info');
+
+/* ---------------------------- MODAL ---------------------------- */
+let lastFocus=null,modalLocked=false;
+function openModal({title='',sub='',body='',foot='',size='',locked=false,hideClose=false}){
+  lastFocus=document.activeElement;modalLocked=locked;
+  const m=$('#modal');m.className='modal '+size;
+  m.innerHTML=`${title?`<div class="modal-hd"><div><h2 id="modalTitle">${title}</h2>${sub?`<p>${sub}</p>`:''}</div>${hideClose||locked?'':`<button class="icon-btn" data-action="close-modal" aria-label="Close">${icon('x')}</button>`}</div>`:'<h2 id="modalTitle" class="sr-only">Dialog</h2>'}<div class="modal-bd">${body}</div>${foot?`<div class="modal-ft">${foot}</div>`:''}`;
+  $('#modalRoot').classList.add('open');$('#modalRoot').setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>{const f=m.querySelector('input:not([readonly]),select,textarea')||m.querySelector('.modal-ft .btn-primary')||m.querySelector('button');f&&f.focus()},40);
+  return m;
+}
+function closeModal(force){
+  if(modalLocked&&!force)return;modalLocked=false;
+  $('#modalRoot').classList.remove('open');$('#modalRoot').setAttribute('aria-hidden','true');
+  document.body.style.overflow='';$('#modal').innerHTML='';
+  if(lastFocus&&document.contains(lastFocus))lastFocus.focus();
+}
+document.addEventListener('keydown',e=>{
+  if(!$('#modalRoot').classList.contains('open'))return;
+  if(e.key==='Escape'){closeModal();return}
+  if(e.key==='Tab'){const f=$$('button:not([disabled]),[href],input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])',$('#modal')).filter(x=>x.offsetParent!==null);if(!f.length)return;const first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}
+});
+
+/* ---------------------------- VIEWS ---------------------------- */
+function showView(id){$$('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+id));window.scrollTo(0,0)}
+
+/* ---------------------------- LANDING / SITE ---------------------------- */
+const PRODUCT_FEATURES={
+  basic:['Full name and NIN confirmation','Date of birth and gender','Downloadable result'],
+  standard:['Everything in Basic','State and LGA of origin','Masked phone number on record'],
+  premium:['Everything in Standard','Enhanced report layout','Priority processing']
+};
+function applySite(){
+  const s=S.site;
+  $$('[data-site]').forEach(el=>{const k=el.dataset.site;if(s[k]!=null)el.textContent=s[k]});
+  const intl=p=>'234'+String(p).replace(/\D/g,'').replace(/^0/,'');
+  $$('[data-site-href="wa"]').forEach(a=>a.href='https://wa.me/'+intl(s.whatsapp));
+  $$('[data-site-href="tel"]').forEach(a=>a.href='tel:'+String(s.phone).replace(/\s/g,''));
+  document.title=`${s.name} — Secure Identity Verification`;
+  renderLandingPrices();
+}
+function renderLandingPrices(){
+  const list=activeProducts();
+  $('#landingPrices').innerHTML=list.map(p=>`
+    <article class="price-card ${p.id==='standard'?'featured':''}">
+      ${p.id==='standard'?'<span class="tag">Most chosen</span>':''}
+      <h3>${esc(p.name)}</h3><p class="desc">${esc(p.desc)}</p>
+      <div class="amt num">${naira(p.customerPrice)}<small>per verification</small></div>
+      <ul>${(PRODUCT_FEATURES[p.id]||[]).map(f=>`<li>${icon('check')}${esc(f)}</li>`).join('')}</ul>
+      <button class="btn ${p.id==='standard'?'btn-primary':'btn-secondary'} btn-block" data-action="landing-verify" data-product="${p.id}">Verify NIN</button>
+    </article>`).join('');
+  const cheapest=list.length?Math.min(...list.map(p=>p.customerPrice)):0;
+  $$('[data-price="basic"]').forEach(el=>el.textContent=naira(cheapest));
+}
+function openLegal(kind){
+  const n=esc(S.site.name);
+  const body=kind==='privacy'
+    ?`<div style="display:grid;gap:12px;color:#3D4A43"><p>${n} collects only the information needed to provide identity verification services: your account details, wallet transactions and the verification requests you submit.</p><p>Verification results are stored so you can access them from your history. Sensitive fields are masked in lists and shown in full only to the account that requested them.</p><p>We do not sell personal data. Payment information is processed by our payment partner.</p><div class="note">${icon('info')}<span>Demo policy text for presentation purposes. The final policy will be prepared with legal review.</span></div></div>`
+    :`<div style="display:grid;gap:12px;color:#3D4A43"><p>By creating an account you confirm that you have a lawful reason and, where required, consent to verify the identity numbers you submit.</p><p>Wallet funds are non-withdrawable and can only be used for verification services. Fees are shown before each verification and are deducted only after you confirm.</p><p>Misuse of the platform, including attempts to verify identities without authorisation, may lead to account suspension.</p><div class="note">${icon('info')}<span>Demo terms for presentation purposes. The final terms will be prepared with legal review.</span></div></div>`;
+  openModal({title:kind==='privacy'?'Privacy Policy':'Terms of Service',body,foot:'<button class="btn btn-primary" data-action="close-modal">Close</button>',size:'wide'});
+}
+
+/* ---------------------------- AUTH ---------------------------- */
+let pendingProduct=null;
+function showAuth(mode){
+  closeMobileNav();const pb=$('#previewBar');if(pb)pb.hidden=true;
+  showView('auth');
+  $('#loginPane').hidden=mode!=='login';$('#registerPane').hidden=mode!=='register';
+  $$('.field.invalid').forEach(f=>f.classList.remove('invalid'));
+  setTimeout(()=>{const f=mode==='login'?$('#loginEmail'):$('#regName');f&&f.focus()},50);
+}
+function login(email,pass){
+  email=String(email).trim().toLowerCase();
+  if(email===S.admin.email&&pass===S.admin.password){S.session={role:'admin',page:'overview'};audit('Signed in to admin console','Admin Session');save();enterApp();toast('Signed in','Welcome to the admin console');return true}
+  const u=S.users.find(x=>x.email.toLowerCase()===email&&x.password===pass);
+  if(u){
+    if(u.status==='Suspended'){$('#loginErr').textContent='This account is suspended. Contact support to restore access.';$('#loginPass').closest('.field').classList.add('invalid');return false}
+    S.session={role:'user',userId:u.id,page:pendingProduct?'verify':'dashboard'};
+    if(pendingProduct){VS.product=pendingProduct;pendingProduct=null}
+    save();enterApp();toast('Signed in','Welcome back, '+u.name.split(' ')[0]);return true;
+  }
+  $('#loginErr').textContent='Email or password is incorrect. Use one of the demo accounts below.';
+  $('#loginPass').closest('.field').classList.add('invalid');return false;
+}
+function logout(){
+  const wasAdmin=S.session&&S.session.role==='admin';
+  S.session=null;save();closeSidebar();resetVerify();
+  showAuth('login');
+  $('#loginEmail').value='';$('#loginPass').value='';
+  toast('Signed out',wasAdmin?'Admin session ended':'You have been signed out','info');
+}
+function handleRegister(e){
+  e.preventDefault();
+  const name=$('#regName'),email=$('#regEmail'),phone=$('#regPhone'),pass=$('#regPass');
+  const set=(el,bad)=>{el.closest('.field').classList.toggle('invalid',bad);return !bad};
+  let ok=true;
+  ok=set(name,name.value.trim().split(/\s+/).length<2)&&ok;
+  const em=email.value.trim().toLowerCase();
+  ok=set(email,!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)||S.users.some(u=>u.email.toLowerCase()===em)||em===S.admin.email)&&ok;
+  ok=set(phone,phone.value.replace(/\D/g,'').length!==11)&&ok;
+  ok=set(pass,pass.value.length<8)&&ok;
+  if(!$('#regTerms').checked){toast('Accept the terms to continue','Tick the Terms of Service box.','warn');ok=false}
+  if(!ok)return;
+  const digits=phone.value.replace(/\D/g,'');
+  const u={id:'u'+Date.now(),name:name.value.trim().replace(/\s+/g,' '),email:em,phone:digits.replace(/(\d{4})(\d{3})(\d{4})/,'$1 $2 $3'),password:pass.value,balance:0,status:'Active',joined:nowIso(),va:'0123456789'};
+  S.users.push(u);S.stats.totalUsers++;
+  notify(u.id,'Welcome',`Your ${S.site.name} account is ready.`,'welcome');
+  S.session={role:'user',userId:u.id,page:'dashboard'};save();
+  $('#registerForm').reset();
+  enterApp();
+  openModal({body:`<div style="text-align:center;padding:8px 0 4px"><div class="success-mark">${icon('check')}</div><h2 style="font-size:21px;letter-spacing:-.02em">Account created successfully.</h2><p class="muted" style="margin-top:6px">Your demo virtual account is:</p><div class="acct-box" style="margin:18px 0 6px;text-align:left"><div class="row"><span>Account Number</span><strong class="num big">${u.va}</strong></div><div class="row"><span>Bank</span><strong>Demo Bank</strong></div><div class="row"><span>Account Name</span><strong>${esc(u.name)} - ${esc(S.site.name)}</strong></div></div><p class="muted" style="font-size:13px">Transfer to this account to fund your wallet.</p></div>`,foot:`<button class="btn btn-secondary" data-action="copy-account">${icon('copy','sm')}Copy</button><button class="btn btn-primary" data-action="close-modal">Go to dashboard</button>`});
+}
+
+/* ---------------------------- APP SHELL / NAVIGATION ---------------------------- */
+const USER_NAV=[
+  {items:[['dashboard','Dashboard','dashboard']]},
+  {label:'Verification',items:[['verify','Verify NIN','verify'],['wallet','Wallet','wallet'],['transactions','Transactions','transactions'],['history','Verification History','history'],['downloads','Downloads','download']]},
+  {label:'Account',items:[['profile','Profile','user'],['notifications','Notifications','bell'],['settings','Settings','settings']]}
+];
+const ADMIN_NAV=[
+  {items:[['overview','Overview','dashboard']]},
+  {label:'Management',items:[['users','Users','users'],['verifications','Verifications','verify'],['wallets','Wallets','wallet'],['admin-transactions','Transactions','transactions']]},
+  {label:'Products',items:[['products','Verification Products','box'],['pricing','Pricing','tag']]},
+  {label:'Payments',items:[['payments','Payments','card'],['virtual-accounts','Virtual Accounts','bank']]},
+  {label:'Integration',items:[['api','API Integration','api'],['api-logs','API Logs','server']]},
+  {label:'Insights',items:[['reports','Reports','reports'],['admin-notifications','Notifications','bell'],['audit','Audit Logs','audit']]},
+  {label:'System',items:[['website','Website Settings','globe'],['admin-settings','Admin Settings','settings']]}
+];
+function navDef(){return S.session.role==='admin'?ADMIN_NAV:USER_NAV}
+function pageMeta(page){for(const g of navDef())for(const it of g.items)if(it[0]===page)return {title:it[1],group:g.label||''};return {title:'Dashboard',group:''}}
+function unreadCount(){const u=me();return u?S.notifications.filter(n=>n.userId===u.id&&!n.read).length:0}
+function enterApp(){
+  showView('app');
+  const isUser=S.session.role==='user';
+  $('#appShell').parentElement.classList.toggle('has-bottom-nav',isUser);
+  $('#bottomNav').classList.toggle('hide',!isUser);
+  $('#sidebar').classList.toggle('compact',!isUser);
+  go(S.session.page||(isUser?'dashboard':'overview'),true);
+}
+function renderChrome(){
+  const page=S.session.page,isUser=S.session.role==='user',unread=unreadCount();
+  $('#sideNav').innerHTML=navDef().map(g=>`<div class="sb-group">${g.label?`<div class="sb-label">${g.label}</div>`:''}${g.items.map(([id,label,ic])=>`<button class="nav-item ${id===page?'active':''}" data-nav="${id}" ${id===page?'aria-current="page"':''}>${icon(ic)}${label}${id==='notifications'&&unread?`<span class="count">${unread}</span>`:''}</button>`).join('')}</div>`).join('');
+  const u=me();
+  $('#sbUser').innerHTML=isUser?`<div class="avatar">${initials(u.name)}</div><div style="min-width:0"><div class="n">${esc(u.name)}</div><div class="e">${esc(u.email)}</div></div>`:`<div class="avatar admin">AD</div><div style="min-width:0"><div class="n">${esc(S.admin.name)}</div><div class="e">Super administrator</div></div>`;
+  const m=pageMeta(page);
+  $('#crumbs').innerHTML=`<span>${isUser?'Account':'Admin'}</span>${m.group?`<span class="hide-xs">${icon('chevronRight')}<span>${m.group}</span></span>`:''}${icon('chevronRight')}<strong>${m.title}</strong>`;
+  $('#notifDot').hidden=isUser?!unread:false;
+  if(isUser){
+    const b=[['dashboard','Home','dashboard'],['verify','Verify','verify'],['wallet','Wallet','wallet'],['history','History','history']];
+    $('#bottomNav').innerHTML=b.map(([id,l,ic])=>`<button class="${id===page?'active':''} ${id==='verify'?'primary':''}" data-nav="${id}" aria-label="${l}">${id==='verify'?`<span class="bi">${icon(ic)}</span>`:icon(ic)}${id==='verify'?'':l}</button>`).join('')+`<button data-action="open-sidebar" aria-label="More">${icon('menu')}More</button>`;
+  }
+}
+const PAGES={};
+function go(page,noScroll){
+  if(!S.session)return;
+  if(!PAGES[page])page=S.session.role==='admin'?'overview':'dashboard';
+  S.session.page=page;save();closeSidebar();
+  renderChrome();
+  const main=$('#main');main.innerHTML=PAGES[page]();
+  hydrateIcons(main);
+  if(POST[page])POST[page]();
+  if(!noScroll)window.scrollTo(0,0);
+}
+function rerender(){if(S.session)go(S.session.page,true)}
+const POST={};
+function openSidebar(){$('#sidebar').classList.add('open');$('#sbOverlay').classList.add('show')}
+function closeSidebar(){$('#sidebar').classList.remove('open');$('#sbOverlay').classList.remove('show')}
+function closeMobileNav(){$('#mobileNav').classList.remove('open');const t=$('.menu-toggle');t&&t.setAttribute('aria-expanded','false')}
+
+/* ---------------------------- SHARED UI PIECES ---------------------------- */
+function pageHead(title,sub,actions=''){return `<div class="page-head"><div><h1>${title}</h1>${sub?`<p>${sub}</p>`:''}</div>${actions?`<div class="actions">${actions}</div>`:''}</div>`}
+function emptyState(title,hint,ic='search',cta=''){return `<div class="empty"><div class="ico">${icon(ic)}</div><strong>${title}</strong><span>${hint||''}</span>${cta?`<div style="margin-top:16px">${cta}</div>`:''}</div>`}
+function table(cols,rows,opts={}){
+  if(!rows.length)return emptyState(opts.empty||'No records found',opts.emptyHint||'Try adjusting your search or filters.',opts.emptyIcon||'search',opts.emptyCta||'');
+  return `<div class="table-wrap"><table class="t ${opts.noCards?'':'rt'}"><thead><tr>${cols.map(c=>`<th class="${c.r?'r':''}" scope="col">${c.h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((cell,i)=>`<td data-label="${cols[i].act?'':cols[i].h}" class="${cols[i].r?'r':''} ${cols[i].act?'act':''}">${cell}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+function stat(label,value,ic,sub='',cls=''){return `<div class="card stat ${cls}"><div class="l">${icon(ic)}${label}</div><div class="v num">${value}</div>${sub?`<div class="d">${sub}</div>`:''}</div>`}
+function searchBox(id,ph,filter){return `<div class="input-icon">${icon('search')}<label class="sr-only" for="${id}">${ph}</label><input class="input" id="${id}" type="search" placeholder="${ph}" data-filter="${filter}"></div>`}
+function selectBox(id,label,opts,filter){return `<label class="sr-only" for="${id}">${label}</label><select class="select" id="${id}" data-filter="${filter}">${opts.map(o=>Array.isArray(o)?`<option value="${o[0]}">${o[1]}</option>`:`<option>${o}</option>`).join('')}</select>`}
+const productOpts=()=>[['','All services'],...Object.values(S.products).map(p=>[p.id,p.short])];
+const amountCell=v=>v.charged?`<span class="num">${naira(v.amount)}</span>`:`<span class="muted num" title="Not charged">${naira(0)}</span>`;
+function dateMatch(iso,range){if(!range)return true;const d=toDate(iso),n=new Date();const day=86400e3;if(range==='today')return d.toDateString()===n.toDateString()||iso.slice(0,10)==='2026-09-22';if(range==='7')return n-d<=7*day||d>=new Date(2026,8,16);if(range==='month')return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear()||iso.slice(0,7)==='2026-09';return true}
+
+/* ======================================================================
+   USER DASHBOARD
+   ====================================================================== */
+function userVer(u){return S.verifications.filter(v=>v.userId===u.id)}
+function userTx(u){return S.transactions.filter(t=>t.userId===u.id)}
+function monthSpend(u){return userVer(u).filter(v=>v.charged&&dateMatch(v.date,'month')).reduce((a,v)=>a+v.amount,0)}
+
+PAGES.dashboard=()=>{
+  const u=me(),vs=userVer(u),ok=vs.filter(v=>v.status==='Successful').length;
+  const recent=vs.slice(0,5);
+  return pageHead(`${greeting()}, ${esc(u.name.split(' ')[0])}`,'Manage your verification activity and wallet from one place.',`<button class="btn btn-primary" data-nav="verify">${icon('verify','sm')}Verify NIN</button>`)+
+  `<div class="grid g4 keep2">
+    <div class="card stat stat-hero" style="grid-column:span 1"><svg class="rings" viewBox="0 0 520 520" aria-hidden="true">${ringsSvg('#fff')}</svg><div class="l">${icon('wallet')}Wallet Balance</div><div class="v num">${naira(u.balance,true)}</div><button class="btn btn-sm btn-on-dark" data-action="fund-wallet">${icon('plus','sm')}Fund Wallet</button></div>
+    ${stat('Total Verifications',vs.length,'verify','All time')}
+    ${stat('Successful',ok,'check',vs.length?`<span class="up">${Math.round(ok/vs.length*100)}%</span> success rate`:'No verifications yet')}
+    ${stat('This Month',naira(monthSpend(u)),'calendar','Spent on verifications')}
+  </div>
+  <div class="grid g-main mt">
+    <section class="card">
+      <div class="card-hd"><div><h2>Recent verifications</h2><p>Your latest five requests</p></div><button class="btn btn-ghost btn-sm" data-nav="history">View all${icon('arrowRight','sm')}</button></div>
+      ${recent.length?table([{h:'Reference'},{h:'Service'},{h:'Status'},{h:'Date'},{h:'',act:true}],recent.map(v=>[`<span class="ref num">${v.ref}</span>`,esc(S.products[v.product].short),statusBadge(v.status),fmtDate(v.date),`<button class="btn btn-ghost btn-sm" data-action="view-verification" data-ref="${v.ref}">${icon('eye','sm')}View</button>`])):emptyState('No verifications yet','Your first verification will appear here.','verify',`<button class="btn btn-primary btn-sm" data-nav="verify">Verify a NIN</button>`)}
+    </section>
+    <section class="card">
+      <div class="card-hd"><div><h2>Quick verify</h2><p>Current prices</p></div></div>
+      <div class="card-bd" style="display:grid;gap:10px">
+        ${activeProducts().map(p=>`<button class="svc" style="flex-direction:row;align-items:center;gap:12px;padding:14px 16px" data-action="quick-verify" data-product="${p.id}"><span style="flex:1"><strong>${esc(p.short)}</strong><span class="d" style="display:block">${esc(p.desc)}</span></span><span class="num" style="font-weight:700;font-size:17px">${naira(p.customerPrice)}</span>${icon('chevronRight')}</button>`).join('')}
+        <div class="note" style="margin-top:6px">${icon('info')}<span>Wallet funds can only be used for verification services.</span></div>
+      </div>
+    </section>
+  </div>`;
+};
+
+/* ---------------------------- WALLET ---------------------------- */
+PAGES.wallet=()=>{
+  const u=me(),tx=userTx(u).slice(0,6);
+  const credits=userTx(u).filter(t=>t.type==='credit').reduce((a,t)=>a+t.amount,0);
+  const debits=userTx(u).filter(t=>t.type==='debit').reduce((a,t)=>a+t.amount,0);
+  return pageHead('Wallet','Fund your wallet by bank transfer and pay for verifications from your balance.')+
+  `<div class="grid g-main">
+    <div>
+      <div class="wallet-card">
+        <svg class="rings" viewBox="0 0 520 520" aria-hidden="true">${ringsSvg('#fff')}</svg>
+        <div class="l">Available Balance</div>
+        <div class="v num">${naira(u.balance,true)}</div>
+        <div class="va-box">
+          <div><span>Virtual Account</span><strong class="num">${u.va}</strong></div>
+          <div><span>Bank</span><strong>Demo Bank</strong></div>
+          <div><span>Account Name</span><strong style="font-size:14.5px">${esc(u.name)}</strong></div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-on-dark" data-action="fund-wallet">${icon('plus','sm')}Fund Wallet</button>
+          <button class="btn btn-dark-outline" data-action="copy-account">${icon('copy','sm')}Copy Account Number</button>
+        </div>
+      </div>
+      <div class="grid g2 mt">
+        ${stat('Total funded',naira(credits),'trendUp','All time')}
+        ${stat('Total spent',naira(debits),'verify','On verifications')}
+      </div>
+    </div>
+    <section class="card">
+      <div class="card-hd"><h2>How funding works</h2></div>
+      <div class="card-bd" style="display:grid;gap:16px">
+        <div class="list-row" style="padding:0;border:0"><div class="ico g">${icon('bank')}</div><div class="grow"><strong>Transfer to your virtual account</strong><span>Transfer funds to your virtual account to automatically fund your wallet.</span></div></div>
+        <div class="list-row" style="padding:0;border:0"><div class="ico g">${icon('zap')}</div><div class="grow"><strong>Balance updates automatically</strong><span>Confirmed transfers are credited to your wallet. Minimum funding is ₦100.</span></div></div>
+        <div class="list-row" style="padding:0;border:0"><div class="ico g">${icon('lock')}</div><div class="grow"><strong>For verifications only</strong><span>Wallet funds can only be used for verification services. Withdrawals are not available.</span></div></div>
+      </div>
+    </section>
+  </div>
+  <section class="card mt">
+    <div class="card-hd"><div><h2>Recent wallet activity</h2></div><button class="btn btn-ghost btn-sm" data-nav="transactions">All transactions${icon('arrowRight','sm')}</button></div>
+    ${txTable(tx)}
+  </section>`;
+};
+function txTable(list,showUser){
+  const cols=[{h:'Date'},...(showUser?[{h:'User'}]:[]),{h:'Description'},{h:'Reference'},{h:'Type'},{h:'Amount',r:true},{h:'Status'}];
+  return table(cols,list.map(t=>[fmtDT(t.date),...(showUser?[esc((userById(t.userId)||{}).name||'—')]:[]),esc(t.desc),`<span class="num muted">${t.ref}</span>`,`<span class="badge ${t.type==='credit'?'b-success':'b-neutral'}">${t.type==='credit'?'Credit':'Debit'}</span>`,`<span class="num ${t.type==='credit'?'credit':'debit'}">${t.type==='credit'?'+':'−'}${naira(t.amount)}</span>`,statusBadge(t.status)]),{empty:'No transactions yet',emptyHint:'Fund your wallet to get started.',emptyIcon:'transactions'});
+}
+function openFundModal(){
+  const u=me();
+  openModal({title:'Fund Your Wallet',sub:'Transfer money to your dedicated virtual account.',body:`
+    <div class="acct-box">
+      <div class="row"><span>Account Name</span><strong>${esc(u.name)} - ${esc(S.site.name)}</strong></div>
+      <div class="row"><span>Account Number</span><strong class="num big">${u.va}</strong></div>
+      <div class="row"><span>Bank</span><strong>Demo Bank</strong></div>
+      <div class="row"><span>Minimum funding</span><strong>₦100</strong></div>
+    </div>
+    <div class="note" style="margin-top:14px">${icon('info')}<span>Transfers are credited automatically. Wallet funds can only be used for verification services.</span></div>
+    <div style="margin-top:18px;padding:16px;border:1px dashed #E3C98C;background:#FFFBF2;border-radius:12px">
+      <div style="font-size:12.5px;font-weight:700;color:var(--warn);letter-spacing:.03em;margin-bottom:8px">PRESENTATION CONTROL</div>
+      <p style="font-size:13.5px;color:#5C4A1E;margin-bottom:12px">Simulate a confirmed bank transfer to this account.</p>
+      <button class="btn btn-secondary btn-block" data-action="simulate-funding">${icon('zap','sm')}Simulate ₦1,000 Funding</button>
+    </div>`,
+    foot:`<button class="btn btn-secondary" data-action="close-modal">Close</button><button class="btn btn-primary" data-action="copy-account">${icon('copy','sm')}Copy Account Number</button>`});
+}
+function simulateFunding(){
+  const u=me();if(!u)return;
+  u.balance+=1000;
+  S.transactions.unshift({id:'t'+Date.now(),userId:u.id,date:nowIso(),desc:'Wallet Funding',ref:'FND-'+Date.now().toString().slice(-10),type:'credit',amount:1000,status:'Successful'});
+  notify(u.id,'Wallet Funded','₦1,000 was added to your wallet.','wallet');
+  S.stats.walletFunding+=1000;save();
+  closeModal(true);rerender();
+  toast('Wallet funded successfully',`New balance: ${naira(u.balance,true)}`);
+}
+
+/* ---------------------------- VERIFICATION FLOW ---------------------------- */
+const VS={product:'basic',nin:'',result:null};
+function resetVerify(){VS.nin='';VS.result=null}
+function ensureProduct(){if(!S.products[VS.product]||S.products[VS.product].status!=='Active'){const a=activeProducts()[0];VS.product=a?a.id:'basic'}}
+function stepState(){if(VS.result)return 4;return VS.nin.length===11?3:2}
+function stepperHTML(){const cur=stepState(),labels=['Select Service','Enter NIN','Verify','Result'];return `<ol class="stepper" aria-label="Verification progress" style="padding:0">${labels.map((l,i)=>{const n=i+1,cls=n<cur||(n===4&&VS.result)?'done':n===cur?'current':'';return `<li class="${cls}" ${n===cur?'aria-current="step"':''}><b>${cls==='done'?icon('check','sm'):n}</b>${n}. ${l}</li>`}).join('')}</ol>`}
+PAGES.verify=()=>{
+  ensureProduct();
+  const u=me();
+  if(VS.result)return pageHead('Verify NIN','Your verification result is ready.')+stepperHTML()+(VS.result.status==='Successful'?resultCard(VS.result,true):failedCard(VS.result));
+  const p=S.products[VS.product];
+  return pageHead('Verify NIN','Select a service, enter the 11-digit NIN and confirm the fee.')+stepperHTML()+
+  `<div class="grid g-main">
+    <section class="card">
+      <div class="card-hd"><div><h2>Select Service</h2><p>Choose the level of detail you need</p></div></div>
+      <div class="card-bd">
+        <div class="svc-grid" role="radiogroup" aria-label="Verification service">
+          ${activeProducts().map(x=>`<button class="svc" role="radio" aria-checked="${x.id===VS.product}" data-action="select-product" data-product="${x.id}"><span class="radio" aria-hidden="true"></span><span><strong>${esc(x.short)}</strong><span class="d" style="display:block">${esc(x.desc)}</span></span><span class="p num">${naira(x.customerPrice)}</span></button>`).join('')||'<p class="muted">No verification products are active.</p>'}
+        </div>
+        <div class="field" style="margin-top:28px" id="ninField">
+          <label for="ninInput">Enter NIN Number</label>
+          <input class="input nin-input" id="ninInput" inputmode="numeric" autocomplete="off" maxlength="11" placeholder="00000000000" value="${esc(VS.nin)}" aria-describedby="ninHint ninErr">
+          <span class="hint" id="ninHint"><span id="ninCount">${VS.nin.length}</span>/11 digits. Demo tip: any 11 digits work; numbers starting with 000 return “no record”.</span>
+          <span class="err" id="ninErr">Enter a valid 11-digit NIN.</span>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" style="margin-top:20px" data-action="verify-submit" id="verifyBtn">${icon('shieldCheck','sm')}<span id="verifyBtnTxt">Verify NIN — ${naira(p.customerPrice)}</span></button>
+      </div>
+    </section>
+    <aside class="card" aria-label="Payment summary">
+      <div class="card-hd"><h2>Summary</h2></div>
+      <div class="card-bd">
+        <div class="summary-row"><span>Service</span><strong id="sumSvc">${esc(p.name)}</strong></div>
+        <div class="summary-row"><span>Verification Fee</span><strong class="num" id="sumFee">${naira(p.customerPrice)}</strong></div>
+        <div class="summary-row"><span>Wallet Balance</span><strong class="num">${naira(u.balance)}</strong></div>
+        <div class="summary-row total"><span>Balance After</span><strong class="num" id="sumAfter">${naira(u.balance-p.customerPrice)}</strong></div>
+        <div id="balNote" style="margin-top:14px"></div>
+        <div class="note" style="margin-top:14px">${icon('lock')}<span>You'll confirm the fee before your wallet is charged.</span></div>
+      </div>
+    </aside>
+  </div>`;
+};
+POST.verify=()=>{updateVerifyUI()};
+function updateVerifyUI(){
+  const u=me(),p=S.products[VS.product];if(!p||!$('#verifyBtnTxt'))return;
+  $$('.svc[data-action="select-product"]').forEach(b=>b.setAttribute('aria-checked',String(b.dataset.product===VS.product)));
+  $('#verifyBtnTxt').textContent=`Verify NIN — ${naira(p.customerPrice)}`;
+  $('#sumSvc').textContent=p.name;$('#sumFee').textContent=naira(p.customerPrice);
+  const after=u.balance-p.customerPrice;$('#sumAfter').textContent=after<0?'Insufficient':naira(after);
+  $('#sumAfter').style.color=after<0?'var(--err)':'';
+  $('#balNote').innerHTML=after<0?`<div class="note warn">${icon('alert')}<span>Your balance is too low for this service. <button class="link" data-action="fund-wallet" style="color:inherit;text-decoration:underline">Fund wallet</button></span></div>`:'';
+  $('#ninCount').textContent=VS.nin.length;
+  const st=$('.stepper');if(st){st.outerHTML=stepperHTML();hydrateIcons($('#main'))}
+}
+function submitVerify(){
+  const u=me(),p=S.products[VS.product];
+  if(!/^\d{11}$/.test(VS.nin)){$('#ninField').classList.add('invalid');$('#ninInput').focus();toast('Enter a valid NIN','A NIN has exactly 11 digits.','warn');return}
+  if(u.balance<p.customerPrice){
+    openModal({title:'Insufficient wallet balance',body:`<div class="note warn">${icon('alert')}<span>This verification costs ${naira(p.customerPrice)} but your balance is ${naira(u.balance,true)}. Fund your wallet to continue.</span></div>`,foot:`<button class="btn btn-secondary" data-action="close-modal">Cancel</button><button class="btn btn-primary" data-action="fund-wallet">${icon('plus','sm')}Fund Wallet</button>`});
+    toast('Insufficient wallet balance',`You need ${naira(p.customerPrice-u.balance)} more.`,'warn');return;
+  }
+  openModal({title:'Confirm Verification',sub:'Please review the details below.',body:`
+    <div class="summary-row"><span>Service</span><strong>${esc(p.name)}</strong></div>
+    <div class="summary-row"><span>NIN</span><strong class="num">${VS.nin.replace(/(\d{4})(\d{4})(\d{3})/,'$1 $2 $3')}</strong></div>
+    <div class="summary-row"><span>Verification Fee</span><strong class="num">${naira(p.customerPrice)}</strong></div>
+    <div class="summary-row"><span>Wallet Balance</span><strong class="num">${naira(u.balance)}</strong></div>
+    <div class="summary-row total"><span>Balance After</span><strong class="num">${naira(u.balance-p.customerPrice)}</strong></div>
+    <p style="margin-top:14px">Do you want to continue?</p>`,
+    foot:`<button class="btn btn-secondary" data-action="close-modal">Cancel</button><button class="btn btn-primary" data-action="confirm-verify">${icon('check','sm')}Confirm &amp; Verify</button>`});
+}
+function runVerification(){
+  const u=me(),p=S.products[VS.product],nin=VS.nin;
+  openModal({locked:true,body:`<div class="proc"><div class="spinner" aria-hidden="true"></div><h2 id="procTitle" style="font-size:19px;letter-spacing:-.015em">Verifying NIN...</h2><p class="muted" style="font-size:14px">Please keep this window open.</p>
+    <ul class="proc-steps">${['Checking information','Securely processing request','Preparing verification result'].map(s=>`<li><i>${icon('check')}</i>${s}</li>`).join('')}</ul></div>`});
+  const lis=$$('.proc-steps li');
+  lis.forEach((li,i)=>setTimeout(()=>li.classList.add('on'),350+i*480));
+  setTimeout(()=>{
+    const failed=nin.startsWith('000');
+    const ref='WV-2026-'+String(S.nextRef++).padStart(6,'0');
+    const dur=+(0.9+Math.random()*1).toFixed(2);
+    const v={ref,userId:u.id,product:p.id,nin,amount:p.customerPrice,cost:p.providerCost,status:failed?'Failed':'Successful',charged:!failed,date:nowIso(),person:failed?null:Object.assign({},personForNin(nin)),duration:dur};
+    S.verifications.unshift(v);
+    S.apiLogs.unshift({time:v.date,ref,product:p.id,code:failed?404:200,status:failed?'No record':'Success',duration:dur});
+    if(!failed){
+      u.balance-=p.customerPrice;
+      S.transactions.unshift({id:'t'+Date.now(),userId:u.id,date:v.date,desc:`NIN ${p.short} Verification`,ref,type:'debit',amount:p.customerPrice,status:'Successful'});
+      notify(u.id,'Verification Successful',`Your NIN verification ${ref} was completed.`,'verify');
+      S.stats.todayVerif++;S.stats.todayRevenue+=p.customerPrice;S.stats.apiCost+=p.providerCost;
+    }else notify(u.id,'No record found',`Verification ${ref} returned no matching record. You were not charged.`,'verify');
+    save();VS.result=v;closeModal(true);
+    if(S.session.page!=='verify')go('verify');else rerender();
+    failed?toast('No matching record found','You were not charged for this request.','warn'):toast('Verification successful',`${naira(p.customerPrice)} deducted. Reference ${ref}`);
+  },1900);
+}
+function resultCard(v,inPage){
+  const p=S.products[v.product],per=v.person||{};
+  const rows=[['NIN',`<span class="num">${esc(v.nin)}</span>`],['Date of Birth',per.dob],['Gender',per.gender],['State',per.state],['LGA',per.lga],['Phone',`<span class="num">${per.phone}</span>`],['Verification Reference',`<span class="num">${v.ref}</span>`],['Service',esc(p?p.name:v.product)],['Status','<span style="color:var(--g)">VERIFIED</span>']];
+  return `<article class="card result">
+    <div class="result-banner"><div class="seal">${icon('check')}</div><div><h2>VERIFICATION SUCCESSFUL</h2><p>Completed ${fmtDT(v.date)}</p></div><span class="badge b-success" style="margin-left:auto">Verified</span></div>
+    <div class="demo-flag">${icon('alert')}DEMO DATA — NOT A REAL NIN RECORD</div>
+    <div class="result-body">
+      <div class="demo-photo" role="img" aria-label="Demo photo placeholder">DEMO<br>PHOTO</div>
+      <div><div class="result-name">${esc(per.name)}</div><div class="muted" style="font-size:14px">${esc(p?p.name:'')}</div>
+        <div class="result-grid">${rows.map(([k,val])=>`<div class="kv"><span>${k}</span><strong>${val}</strong></div>`).join('')}</div></div>
+    </div>
+    <div class="result-foot">
+      ${inPage?`<button class="btn btn-secondary" data-action="verify-another">${icon('refresh','sm')}Verify Another NIN</button>`:''}
+      <button class="btn btn-secondary" data-action="print-report" data-ref="${v.ref}">${icon('printer','sm')}Print</button>
+      <button class="btn btn-primary" data-action="download-report" data-ref="${v.ref}">${icon('download','sm')}Download PDF</button>
+    </div>
+  </article>`;
+}
+function failedCard(v){
+  return `<article class="card result">
+    <div class="result-banner" style="background:var(--errbg);border-color:#F6D3CF"><div class="seal" style="background:var(--err);box-shadow:0 0 0 6px #FBE0DC">${icon('x')}</div><div><h2 style="color:var(--err)">NO MATCHING RECORD</h2><p style="color:#7A2E24">The NIN ${esc(maskNin(v.nin))} did not return a record. You were not charged.</p></div></div>
+    <div class="card-bd" style="display:grid;gap:10px"><div class="summary-row"><span>Verification Reference</span><strong class="num">${v.ref}</strong></div><div class="summary-row"><span>Service</span><strong>${esc(S.products[v.product].name)}</strong></div><div class="summary-row"><span>Amount charged</span><strong class="num">${naira(0)}</strong></div>
+    <div class="note">${icon('info')}<span>Check the number and try again. Make sure all 11 digits are correct.</span></div></div>
+    <div class="result-foot"><button class="btn btn-primary" data-action="verify-another">${icon('refresh','sm')}Try Again</button></div>
+  </article>`;
+}
+function viewVerification(ref){
+  const v=S.verifications.find(x=>x.ref===ref);if(!v)return;
+  const owner=userById(v.userId);
+  if(v.status!=='Successful'){openModal({title:'Verification '+v.ref,body:failedCard(v).replace(/<div class="result-foot">[\s\S]*?<\/div>\s*<\/article>/,'</article>'),foot:'<button class="btn btn-primary" data-action="close-modal">Close</button>',size:'wide'});return}
+  openModal({title:'Verification Result',sub:S.session.role==='admin'&&owner?`Requested by ${esc(owner.name)}`:'',body:resultCard(v,false).replace('class="card result"','class="card result" style="box-shadow:none"'),size:'xwide'});
+}
+
+/* ---------------------------- HISTORY / DOWNLOADS / TRANSACTIONS ---------------------------- */
+PAGES.history=()=>pageHead('Verification History','Every verification you have requested.',`<button class="btn btn-primary" data-nav="verify">${icon('verify','sm')}New verification</button>`)+
+  `<section class="card"><div class="toolbar">${searchBox('hSearch','Search reference or NIN','history')}${selectBox('hSvc','Service',productOpts(),'history')}${selectBox('hStatus','Status',[['','All statuses'],'Successful','Failed'],'history')}${selectBox('hDate','Date',[['','All time'],['today','Today'],['7','Last 7 days'],['month','This month']],'history')}</div><div id="hTable"></div><div class="table-foot" id="hFoot"></div></section>`;
+POST.history=()=>FILTERS.history();
+PAGES.downloads=()=>{
+  const list=userVer(me()).filter(v=>v.status==='Successful');
+  return pageHead('Downloads','Download or print reports for your successful verifications.')+
+  `<section class="card">${table([{h:'Report'},{h:'Service'},{h:'Name on record'},{h:'Date'},{h:'',act:true}],list.map(v=>[`<span style="display:flex;gap:10px;align-items:center"><span class="list-row" style="padding:0;border:0"><span class="ico g" style="width:32px;height:32px">${icon('file','sm')}</span></span><span class="ref num">${v.ref}</span></span>`,esc(S.products[v.product].short),esc(v.person.name),fmtDate(v.date),`<span style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" data-action="print-report" data-ref="${v.ref}" aria-label="Print ${v.ref}" data-tip="Print">${icon('printer','sm')}</button><button class="btn btn-soft btn-sm" data-action="download-report" data-ref="${v.ref}">${icon('download','sm')}Download</button></span>`]),{empty:'No reports yet',emptyHint:'Reports appear here after a successful verification.',emptyIcon:'download'})}</section>`;
+};
+PAGES.transactions=()=>pageHead('Transactions','Wallet credits and verification charges.',`<button class="btn btn-primary" data-action="fund-wallet">${icon('plus','sm')}Fund Wallet</button>`)+
+  `<section class="card"><div class="toolbar">${searchBox('tSearch','Search description or reference','transactions')}${selectBox('tType','Type',[['','All types'],['credit','Credit'],['debit','Debit']],'transactions')}${selectBox('tDate','Date',[['','All time'],['today','Today'],['7','Last 7 days'],['month','This month']],'transactions')}</div><div id="tTable"></div></section>`;
+POST.transactions=()=>FILTERS.transactions();
+
+/* ---------------------------- PROFILE / NOTIFICATIONS / SETTINGS ---------------------------- */
+PAGES.profile=()=>{
+  const u=me();
+  return pageHead('Profile','Your personal information and account status.')+
+  `<div class="grid g-main"><section class="card"><div class="card-hd"><h2>Personal Information</h2><button class="btn btn-secondary btn-sm" data-action="edit-profile">${icon('edit','sm')}Edit Profile</button></div>
+    <div class="card-bd"><div style="display:flex;gap:16px;align-items:center;margin-bottom:24px"><div class="avatar" style="width:56px;height:56px;font-size:18px">${initials(u.name)}</div><div><div style="font-size:18px;font-weight:650">${esc(u.name)}</div><div class="muted" style="font-size:13.5px">Member since ${fmtDate(u.joined)}</div></div></div>
+    <div class="grid g2" style="gap:18px 24px">
+      <div class="kv"><span>Full Name</span><strong>${esc(u.name)}</strong></div>
+      <div class="kv"><span>Email</span><strong style="word-break:break-all">${esc(u.email)}</strong></div>
+      <div class="kv"><span>Phone</span><strong class="num">${esc(u.phone)}</strong></div>
+      <div class="kv"><span>Account Status</span><strong>${statusBadge(u.status)}</strong></div>
+      <div class="kv"><span>Virtual Account</span><strong class="num">${u.va} · Demo Bank</strong></div>
+      <div class="kv"><span>Account Type</span><strong>Individual</strong></div>
+    </div></div></section>
+    <section class="card"><div class="card-hd"><h2>Security</h2></div>
+      <div class="settings-row"><div><strong>Password</strong><span>Last changed 30 days ago</span></div><button class="btn btn-secondary btn-sm" data-action="change-password">Change Password</button></div>
+      <div class="settings-row"><div><strong>Active sessions</strong><span>1 device signed in</span></div><button class="btn btn-ghost btn-sm" data-action="demo" data-msg="Session management is part of the production build.">Manage</button></div>
+    </section></div>`;
+};
+function editProfile(){
+  const u=me();
+  openModal({title:'Edit Profile',body:`<form id="profileForm" class="form-grid" novalidate>
+    <div class="field full"><label for="pfName">Full Name</label><input class="input" id="pfName" value="${esc(u.name)}"><span class="err">Enter your full name.</span></div>
+    <div class="field full"><label for="pfEmail">Email</label><input class="input" id="pfEmail" value="${esc(u.email)}" readonly><span class="hint">Contact support to change your email.</span></div>
+    <div class="field full"><label for="pfPhone">Phone</label><input class="input" id="pfPhone" value="${esc(u.phone)}" inputmode="tel"><span class="err">Enter an 11-digit phone number.</span></div></form>`,
+    foot:`<button class="btn btn-secondary" data-action="close-modal">Cancel</button><button class="btn btn-primary" data-action="save-profile">Save changes</button>`});
+}
+function saveProfile(){
+  const u=me(),n=$('#pfName'),ph=$('#pfPhone');let ok=true;
+  const bad=(el,b)=>{el.closest('.field').classList.toggle('invalid',b);if(b)ok=false};
+  bad(n,n.value.trim().split(/\s+/).length<2);bad(ph,ph.value.replace(/\D/g,'').length!==11);
+  if(!ok)return;
+  u.name=n.value.trim();u.phone=ph.value.replace(/\D/g,'').replace(/(\d{4})(\d{3})(\d{4})/,'$1 $2 $3');save();closeModal();rerender();toast('Profile updated');
+}
+function changePassword(){
+  openModal({title:'Change Password',body:`<form class="form-grid" novalidate>
+    <div class="field full"><label for="pwOld">Current password</label><input class="input" type="password" id="pwOld" autocomplete="current-password"><span class="err">Current password is incorrect.</span></div>
+    <div class="field full"><label for="pwNew">New password</label><input class="input" type="password" id="pwNew" autocomplete="new-password"><span class="hint">At least 8 characters.</span><span class="err">Use at least 8 characters.</span></div>
+    <div class="field full"><label for="pwNew2">Confirm new password</label><input class="input" type="password" id="pwNew2" autocomplete="new-password"><span class="err">Passwords don't match.</span></div></form>`,
+    foot:`<button class="btn btn-secondary" data-action="close-modal">Cancel</button><button class="btn btn-primary" data-action="save-password">Update password</button>`});
+}
+function savePassword(){
+  const isAdmin=S.session.role==='admin',acct=isAdmin?S.admin:me();
+  const o=$('#pwOld'),n=$('#pwNew'),n2=$('#pwNew2');let ok=true;
+  const bad=(el,b)=>{el.closest('.field').classList.toggle('invalid',b);if(b)ok=false};
+  bad(o,o.value!==acct.password);bad(n,n.value.length<8);bad(n2,n2.value!==n.value||!n2.value);
+  if(!ok)return;acct.password=n.value;if(isAdmin)audit('Changed admin password','Admin Account');save();closeModal();toast('Password updated','Use your new password next time you sign in.');
+}
+PAGES.notifications=()=>{
+  const u=me(),list=S.notifications.filter(n=>n.userId===u.id);
+  const ic={verify:'shieldCheck',wallet:'wallet',welcome:'user',broadcast:'bell'};
+  return pageHead('Notifications','Updates about your verifications and wallet.',list.some(n=>!n.read)?`<button class="btn btn-secondary" data-action="mark-all-read">${icon('check','sm')}Mark all as read</button>`:'')+
+  `<section class="card">${list.length?list.map(n=>`<div class="list-row"><div class="ico ${n.read?'':'g'}">${icon(ic[n.type]||'bell')}</div><div class="grow"><strong>${esc(n.title)}${n.read?'':' <span class="badge b-success" style="height:20px;font-size:11px;margin-left:6px">New</span>'}</strong><span>${esc(n.body)}</span></div><span class="muted" style="font-size:12.5px;white-space:nowrap">${ago(n.date)}</span></div>`).join(''):emptyState('You are all caught up','New notifications will appear here.','bell')}</section>`;
+};
+PAGES.settings=()=>{
+  const pr=S.prefs[me().id]||{email:true,sms:false,low:true};
+  const sw=(k,v)=>`<label class="switch"><input type="checkbox" data-pref="${k}" ${v?'checked':''} aria-label="${k}"><span></span></label>`;
+  return pageHead('Settings','Choose how we contact you and manage this demo.')+
+  `<div class="grid g2"><section class="card"><div class="card-hd"><h2>Notifications</h2></div>
+    <div class="settings-row"><div><strong>Email notifications</strong><span>Verification results and receipts</span></div>${sw('email',pr.email)}</div>
+    <div class="settings-row"><div><strong>SMS alerts</strong><span>Wallet funding confirmations</span></div>${sw('sms',pr.sms)}</div>
+    <div class="settings-row"><div><strong>Low balance alert</strong><span>When your balance drops below ₦500</span></div>${sw('low',pr.low)}</div></section>
+  <section class="card"><div class="card-hd"><h2>Presentation</h2></div>
+    <div class="settings-row"><div><strong>Reset demo data</strong><span>Restore balances, prices and records to their original state</span></div><button class="btn btn-danger btn-sm" data-action="reset-demo">Reset</button></div></section></div>`;
+};
+function resetDemo(){
+  openModal({title:'Reset demo data?',body:'<p>This restores all balances, prices, users and records to the original presentation state. You will be signed out.</p>',foot:'<button class="btn btn-secondary" data-action="close-modal">Cancel</button><button class="btn btn-primary" data-action="confirm-reset">Reset demo</button>'});
+}
+
+/* ---------------------------- PRINT / PDF REPORT ---------------------------- */
+function reportHTML(v){
+  const p=S.products[v.product],per=v.person;
+  const row=(k,val)=>`<tr><th>${k}</th><td>${val}</td></tr>`;
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Demo Verification Report ${v.ref}</title><style>
+  @page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Inter,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#17231D;margin:0;font-size:13px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wm{position:fixed;top:40%;left:0;right:0;text-align:center;font-size:110px;font-weight:800;color:rgba(8,116,67,.06);transform:rotate(-24deg);letter-spacing:.1em}
+  header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #087443;padding-bottom:14px}
+  .brand{display:flex;gap:10px;align-items:center;font-weight:750;font-size:15px}.brand svg{width:34px;height:34px}
+  .tag{font-size:11px;font-weight:700;letter-spacing:.08em;color:#9A5B06;background:#FDF4E3;padding:6px 10px;border-radius:6px}
+  h1{font-size:20px;margin:24px 0 2px;letter-spacing:-.01em}.sub{color:#6B7770;margin:0 0 18px}
+  .status{display:flex;align-items:center;gap:10px;background:#EAF7F0;color:#087443;font-weight:700;padding:12px 14px;border-radius:8px;letter-spacing:.04em}
+  .body{display:flex;gap:22px;margin-top:20px}.photo{width:110px;height:136px;border:1px dashed #9EB0A5;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11px;color:#6B7770;background:repeating-linear-gradient(135deg,#E9EFEB 0 6px,#F3F6F4 6px 12px)}
+  table{border-collapse:collapse;flex:1}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid #E4EAE6}th{width:40%;color:#6B7770;font-weight:500}td{font-weight:600}
+  .disc{margin-top:28px;padding:12px 14px;border:1px solid #F0DDB5;background:#FFFBF2;border-radius:8px;color:#6B5320;font-size:11.5px;line-height:1.5}
+  footer{margin-top:22px;display:flex;justify-content:space-between;color:#6B7770;font-size:11px}
+  </style></head><body><div class="wm">DEMO</div>
+  <header><div class="brand">${logoSvg()}${esc(S.site.name)}</div><div class="tag">DEMO VERIFICATION REPORT</div></header>
+  <h1>Identity Verification Report</h1><p class="sub">${esc(p.name)} · Generated ${fmtDT(nowIso())}</p>
+  <div class="status">✓ VERIFICATION SUCCESSFUL</div>
+  <div class="body"><div class="photo">DEMO<br>PHOTO</div><table>
+  ${row('Full Name',esc(per.name))}${row('NIN',esc(v.nin))}${row('Date of Birth',per.dob)}${row('Gender',per.gender)}${row('State',per.state)}${row('LGA',per.lga)}${row('Phone',per.phone)}${row('Verification Reference',v.ref)}${row('Verification Date',fmtDT(v.date))}${row('Status','VERIFIED')}</table></div>
+  <div class="disc"><strong>DEMO DATA — NOT A REAL NIN RECORD.</strong> This report was generated by a presentation prototype using fictional information. It is not an official government document and must not be used for identification.</div>
+  <footer><span>${esc(S.site.name)} · ${esc(S.site.address)} · ${esc(S.site.phone)}</span><span>Ref ${v.ref}</span></footer>
+  </body></html>`;
+}
+function printReport(ref,asPdf){
+  const v=S.verifications.find(x=>x.ref===ref);if(!v||!v.person)return;
+  const f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+  document.body.appendChild(f);
+  const d=f.contentWindow.document;d.open();d.write(reportHTML(v));d.close();
+  setTimeout(()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(e){downloadFile(`demo-verification-report-${v.ref}.html`,reportHTML(v),'text/html')}setTimeout(()=>f.remove(),2000)},300);
+  toast(asPdf?'Preparing demo PDF':'Opening print dialog',asPdf?'Choose “Save as PDF” in the print dialog.':'Demo verification report '+v.ref,'info');
+}
+
+/* ======================================================================
+   ADMIN DASHBOARD
+   ====================================================================== */
+function weekLabels(){const out=[],n=new Date();for(let i=6;i>=0;i--){const d=new Date(n);d.setDate(d.getDate()-i);out.push(i===0?'Today':['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()])}return out}
+function niceMax(v){const m=Math.max(...v,1);const p=Math.pow(10,Math.floor(Math.log10(m)));const s=[1,2,2.5,5,10].find(x=>x*p>=m/1)*p;return s<m?s*2:s}
+const kfmt=v=>v>=1000?(v/1000).toFixed(v%1000?1:0).replace(/\.0$/,'')+'k':String(v);
+function barChart(values,labels,{color='#087443',money=false}={}){
+  const W=560,H=210,pl=54,pr=6,pt=10,pb=26,iw=W-pl-pr,ih=H-pt-pb,max=niceMax(values),n=values.length,bw=Math.min(38,iw/n*.55);
+  let g='';for(let i=0;i<=4;i++){const y=pt+ih-ih*i/4;g+=`<line x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}" stroke="#E4EAE6" ${i?'stroke-dasharray="3 4"':''}/><text x="${pl-8}" y="${y+4}" text-anchor="end">${money?'₦':''}${kfmt(max*i/4)}</text>`}
+  const bars=values.map((v,i)=>{const h=ih*v/max,x=pl+iw/n*i+(iw/n-bw)/2,y=pt+ih-h,last=i===n-1;return `<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="4" fill="${color}" opacity="${last?1:.28}"><title>${labels[i]}: ${money?naira(v):v}</title></rect><text x="${x+bw/2}" y="${H-8}" text-anchor="middle" ${last?'style="fill:#17231D;font-weight:600"':''}>${labels[i]}</text>`}).join('');
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img">${g}${bars}</svg>`;
+}
+function lineChart(series,labels){
+  const W=560,H=210,pl=54,pr=10,pt=10,pb=26,iw=W-pl-pr,ih=H-pt-pb,all=series.flatMap(s=>s.values),max=niceMax(all),n=labels.length;
+  let g='';for(let i=0;i<=4;i++){const y=pt+ih-ih*i/4;g+=`<line x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}" stroke="#E4EAE6" ${i?'stroke-dasharray="3 4"':''}/><text x="${pl-8}" y="${y+4}" text-anchor="end">₦${kfmt(max*i/4)}</text>`}
+  const X=i=>pl+iw*i/(n-1),Y=v=>pt+ih-ih*v/max;
+  const lines=series.map((s,si)=>{const pts=s.values.map((v,i)=>`${X(i)},${Y(v)}`).join(' ');const area=si===0?`<polygon points="${X(0)},${pt+ih} ${pts} ${X(n-1)},${pt+ih}" fill="${s.color}" opacity=".07"/>`:'';return `${area}<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" ${s.dash?'stroke-dasharray="5 5"':''}/>${s.values.map((v,i)=>`<circle cx="${X(i)}" cy="${Y(v)}" r="${i===n-1?4:2.5}" fill="#fff" stroke="${s.color}" stroke-width="2"><title>${s.name} ${labels[i]}: ${naira(v)}</title></circle>`).join('')}`}).join('');
+  const xl=labels.map((l,i)=>`<text x="${X(i)}" y="${H-8}" text-anchor="middle" ${i===n-1?'style="fill:#17231D;font-weight:600"':''}>${l}</text>`).join('');
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img">${g}${lines}${xl}</svg>`;
+}
+function mixChart(){
+  const counts=Object.values(S.products).map(p=>({p,c:S.verifications.filter(v=>v.product===p.id&&v.status==='Successful').length}));
+  const tot=counts.reduce((a,x)=>a+x.c,0)||1;
+  return `<div style="display:grid;gap:18px;padding:6px 0">${counts.map(({p,c})=>{const pct=Math.round(c/tot*100);return `<div><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px"><strong style="font-weight:600">${esc(p.short)}</strong><span class="muted num">${c} verifications · ${pct}%</span></div><div style="height:10px;background:var(--bg);border-radius:6px;overflow:hidden"><div style="width:${pct}%;height:100%;background:var(--g);opacity:${p.id==='basic'?1:p.id==='standard'?.7:.45};border-radius:6px"></div></div></div>`}).join('')}
+  <p class="muted" style="font-size:12.5px">Share of successful verifications in the demo dataset.</p></div>`;
+}
+PAGES.overview=()=>{
+  const st=S.stats,w=st.week,labels=weekLabels(),margin=st.todayRevenue-st.apiCost;
+  const recent=S.verifications.slice(0,6);
+  return pageHead(`${greeting()}, Admin`,'Here is how the platform is performing today.',`<button class="btn btn-secondary" data-nav="reports">${icon('reports','sm')}Reports</button><button class="btn btn-primary" data-nav="products">${icon('tag','sm')}Manage pricing</button>`)+
+  `<div class="grid g3 keep2">
+    ${stat('Total Users',st.totalUsers.toLocaleString(),'users','<span class="up">+24</span> this week')}
+    ${stat("Today's Verifications",st.todayVerif.toLocaleString(),'verify','<span class="up">+14.8%</span> vs yesterday')}
+    ${stat("Today's Revenue",naira(st.todayRevenue),'trendUp','Customer charges')}
+    ${stat('API Cost',naira(st.apiCost),'server','Provider charges today')}
+    ${stat('Gross Margin',naira(margin),'tag',`<span class="up">${(margin/st.todayRevenue*100).toFixed(1)}%</span> of revenue`,'')}
+    ${stat('Wallet Funding',naira(st.walletFunding),'wallet','Received today')}
+  </div>
+  <div class="grid g2 mt">
+    <section class="card"><div class="card-hd"><div><h2>Verification volume</h2><p>Last 7 days</p></div></div><div class="card-bd">${barChart([...w.vol,st.todayVerif],labels)}</div></section>
+    <section class="card"><div class="card-hd"><div><h2>Revenue and API expenditure</h2><p>Last 7 days</p></div><div class="legend"><span><i style="background:#087443"></i>Revenue</span><span><i style="background:#9AA79F"></i>API cost</span></div></div><div class="card-bd">${lineChart([{name:'Revenue',values:[...w.rev,st.todayRevenue],color:'#087443'},{name:'API cost',values:[...w.cost,st.apiCost],color:'#9AA79F',dash:true}],labels)}</div></section>
+    <section class="card"><div class="card-hd"><div><h2>Wallet funding</h2><p>Last 7 days</p></div></div><div class="card-bd">${barChart([...w.fund,st.walletFunding],labels,{color:'#0B8F55',money:true})}</div></section>
+    <section class="card"><div class="card-hd"><div><h2>Product mix</h2><p>Successful verifications by service</p></div></div><div class="card-bd">${mixChart()}</div></section>
+  </div>
+  <section class="card mt"><div class="card-hd"><div><h2>Latest verifications</h2><p>Across all users</p></div><button class="btn btn-ghost btn-sm" data-nav="verifications">View all${icon('arrowRight','sm')}</button></div>${adminVerTable(recent)}</section>`;
+};
+function adminVerTable(list){
+  return table([{h:'Reference'},{h:'User'},{h:'Product'},{h:'NIN'},{h:'Amount',r:true},{h:'Status'},{h:'Date'},{h:'',act:true}],list.map(v=>{const u=userById(v.userId)||{name:'Deleted user'};return [`<span class="ref num">${v.ref}</span>`,esc(u.name),esc(S.products[v.product].short),`<span class="num">${maskNin(v.nin)}</span>`,amountCell(v),statusBadge(v.status),fmtDT(v.date),`<button class="btn btn-ghost btn-sm" data-action="view-verification" data-ref="${v.ref}">${icon('eye','sm')}View</button>`]}));
+}
+
+/* ---------------------------- USERS ---------------------------- */
+PAGES.users=()=>pageHead('Users',`${S.stats.totalUsers.toLocaleString()} registered accounts. Showing the demo sample.`,`<button class="btn btn-secondary" data-action="export-users">${icon('download','sm')}Export CSV</button>`)+
+  `<section class="card"><div class="toolbar">${searchBox('uSearch','Search name, email or phone','users')}${selectBox('uStatus','Status',[['','All statuses'],'Active','Suspended'],'users')}</div><div id="uTable"></div><div class="table-foot" id="uFoot"></div></section>`;
+POST.users=()=>FILTERS.users();
+function userStats(u){const vs=S.verifications.filter(v=>v.userId===u.id);return {count:vs.length,spent:vs.filter(v=>v.charged).reduce((a,v)=>a+v.amount,0),vs}}
+let userTab='overview';
+function openUserDetail(id,tab){
+  const u=userById(id);if(!u)return;userTab=tab||'overview';
+  const {count,spent,vs}=userStats(u),tx=S.transactions.filter(t=>t.userId===u.id);
+  const tabs=[['overview','Overview'],['wallet','Wallet'],['verifications','Verifications'],['transactions','Transactions'],['activity','Activity']];
+  let content='';
+  if(userTab==='overview')content=`<div class="grid g3" style="gap:14px">${[['Account Status',statusBadge(u.status)],['Wallet Balance',naira(u.balance,true)],['Total Verifications',count],['Total Spent',naira(spent)],['Account Created',fmtDate(u.joined)],['Phone',esc(u.phone)]].map(([k,v])=>`<div class="status-tile"><span>${k}</span><strong class="num">${v}</strong></div>`).join('')}</div>`;
+  if(userTab==='wallet')content=`<div class="acct-box"><div class="row"><span>Available balance</span><strong class="num big">${naira(u.balance,true)}</strong></div><div class="row"><span>Virtual account</span><strong class="num">${u.va}</strong></div><div class="row"><span>Bank</span><strong>Demo Bank</strong></div><div class="row"><span>Account name</span><strong>${esc(u.name)} - ${esc(S.site.name)}</strong></div></div><div class="note" style="margin-top:14px">${icon('lock')}<span>Wallet funds are non-withdrawable. Manual adjustments require a second approver in production.</span></div>`;
+  if(userTab==='verifications')content=`<div class="card" style="box-shadow:none">${table([{h:'Reference'},{h:'Product'},{h:'Status'},{h:'Date'}],vs.map(v=>[`<span class="ref num">${v.ref}</span>`,S.products[v.product].short,statusBadge(v.status),fmtDT(v.date)]),{empty:'No verifications',emptyIcon:'verify',emptyHint:'This user has not verified any NIN yet.'})}</div>`;
+  if(userTab==='transactions')content=`<div class="card" style="box-shadow:none">${txTable(tx)}</div>`;
+  if(userTab==='activity'){const acts=[['Signed in','user',u.joined],...vs.slice(0,4).map(v=>[`Requested ${S.products[v.product].short} verification ${v.ref}`,'verify',v.date]),...tx.filter(t=>t.type==='credit').slice(0,2).map(t=>[`Wallet funded with ${naira(t.amount)}`,'wallet',t.date]),['Account created','userPlus',u.joined]].sort((a,b)=>b[2].localeCompare(a[2]));content=`<div class="card" style="box-shadow:none">${acts.map(a=>`<div class="list-row"><div class="ico">${icon(a[1])}</div><div class="grow"><strong style="font-weight:500">${esc(a[0])}</strong><span>${fmtDT(a[2])}</span></div></div>`).join('')}</div>`}
+  openModal({size:'xwide',title:`<span style="display:flex;align-items:center;gap:12px"><span class="avatar">${initials(u.name)}</span><span>${esc(u.name)}<span class="muted" style="display:block;font-size:13.5px;font-weight:400">${esc(u.email)}</span></span></span>`,
+    body:`<div class="tabs" role="tablist" style="margin:-8px -24px 20px;padding:0 24px">${tabs.map(([k,l])=>`<button class="tab" role="tab" aria-selected="${k===userTab}" data-action="user-tab" data-tab="${k}" data-user="${u.id}">${l}</button>`).join('')}</div>${content}`,
+    foot:`<div style="margin-right:auto">${statusBadge(u.status)}</div>${u.status==='Active'?`<button class="btn btn-danger" data-action="toggle-user" data-user="${u.id}">${icon('ban','sm')}Suspend</button>`:`<button class="btn btn-primary" data-action="toggle-user" data-user="${u.id}">${icon('check','sm')}Activate</button>`}<button class="btn btn-secondary" data-action="close-modal">Close</button>`});
+}
+function toggleUser(id){
+  const u=userById(id);if(!u)return;
+  u.status=u.status==='Active'?'Suspended':'Active';
+  audit(`${u.status==='Active'?'Activated':'Suspended'} user ${u.name}`,'User Account');save();
+  const wasOpen=$('#modalRoot').classList.contains('open');
+  if(wasOpen)openUserDetail(id,userTab);
+  if(S.session.page==='users')FILTERS.users();
+  toast(u.status==='Active'?'User activated':'User suspended',`${u.name} is now ${u.status.toLowerCase()}.`,u.status==='Active'?'success':'warn');
+}
+
+/* ---------------------------- VERIFICATIONS / WALLETS / TRANSACTIONS ---------------------------- */
+PAGES.verifications=()=>pageHead('All Verifications','Every verification request across the platform.',`<button class="btn btn-secondary" data-action="export-verifications">${icon('download','sm')}Export CSV</button>`)+
+  `<section class="card"><div class="toolbar">${searchBox('avRef','Search reference','averif')}<div class="input-icon" style="flex:1 1 160px">${icon('verify')}<label class="sr-only" for="avNin">Search NIN</label><input class="input" id="avNin" inputmode="numeric" placeholder="Search NIN" data-filter="averif"></div>${selectBox('avProd','Product',productOpts(),'averif')}${selectBox('avStatus','Status',[['','All statuses'],'Successful','Failed'],'averif')}<label class="sr-only" for="avDate">Date</label><input class="input" type="date" id="avDate" data-filter="averif" style="min-width:150px"></div><div id="avTable"></div><div class="table-foot" id="avFoot"></div></section>`;
+POST.verifications=()=>FILTERS.averif();
+PAGES.wallets=()=>{
+  const total=S.users.reduce((a,u)=>a+u.balance,0);
+  return pageHead('Wallets','Customer wallet balances. Funds are non-withdrawable.')+
+  `<div class="grid g3">${stat('Total wallet balance',naira(total),'wallet','Demo sample of users')}${stat('Funded today',naira(S.stats.walletFunding),'trendUp','Via virtual accounts')}${stat('Wallets below ₦500',S.users.filter(u=>u.balance<500).length,'alert','May need funding')}</div>
+  <section class="card mt">${table([{h:'User'},{h:'Virtual Account'},{h:'Balance',r:true},{h:'Last Funding'},{h:'Status'},{h:'',act:true}],S.users.map(u=>{const lf=S.transactions.find(t=>t.userId===u.id&&t.type==='credit');return [`<div class="cell-user"><span class="avatar">${initials(u.name)}</span><span>${esc(u.name)}<small>${esc(u.email)}</small></span></div>`,`<span class="num">${u.va}</span>`,`<strong class="num">${naira(u.balance,true)}</strong>`,lf?fmtDate(lf.date):'<span class="muted">Never</span>',statusBadge(u.status),`<button class="btn btn-ghost btn-sm" data-action="admin-view-user" data-user="${u.id}" data-tab="wallet">${icon('eye','sm')}View</button>`]}))}</section>`;
+};
+PAGES['admin-transactions']=()=>pageHead('Transactions','All wallet credits and verification charges.',`<button class="btn btn-secondary" data-action="export-transactions">${icon('download','sm')}Export CSV</button>`)+
+  `<section class="card"><div class="toolbar">${searchBox('atSearch','Search description, reference or user','atx')}${selectBox('atType','Type',[['','All types'],['credit','Credit'],['debit','Debit']],'atx')}</div><div id="atTable"></div><div class="table-foot" id="atFoot"></div></section>`;
+POST['admin-transactions']=()=>FILTERS.atx();
+
+/* ---------------------------- PRODUCTS & PRICING ---------------------------- */
+PAGES.products=()=>pageHead('Verification Products','Set provider cost and customer price. Changes apply immediately.')+
+  `<section class="card">${table([{h:'Product'},{h:'Provider Cost',r:true},{h:'Customer Price',r:true},{h:'Margin',r:true},{h:'Status'},{h:'Actions',act:true}],Object.values(S.products).map(p=>{const m=p.customerPrice-p.providerCost;return [`<strong>${esc(p.short)}</strong><small class="muted" style="display:block">${esc(p.name)}</small>`,`<span class="num">${naira(p.providerCost)}</span>`,`<strong class="num">${naira(p.customerPrice)}</strong>`,`<span class="num up">${naira(m)}</span> <span class="muted num" style="font-size:12.5px">(${Math.round(m/p.customerPrice*100)}%)</span>`,statusBadge(p.status),`<button class="btn btn-soft btn-sm" data-action="edit-product" data-product="${p.id}">${icon('edit','sm')}Edit Price</button>`]}))}</section>
+  <div class="note mt">${icon('info')}<span>Customer prices update the website, the user verification screen and new wallet charges instantly. Past transactions keep the price that was charged.</span></div>`;
+PAGES.pricing=()=>{
+  const list=Object.values(S.products),rev=list.reduce((a,p)=>a+p.customerPrice,0),cost=list.reduce((a,p)=>a+p.providerCost,0);
+  return pageHead('Pricing','How your current prices appear to customers.',`<button class="btn btn-primary" data-nav="products">${icon('edit','sm')}Edit prices</button>`)+
+  `<div class="grid g3">${list.map(p=>{const m=p.customerPrice-p.providerCost;return `<section class="card"><div class="card-bd"><div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:16px">${esc(p.name)}</strong>${statusBadge(p.status)}</div><div class="num" style="font-size:36px;font-weight:700;letter-spacing:-.03em;margin:18px 0 4px">${naira(p.customerPrice)}</div><div class="muted" style="font-size:13.5px">Customer price per verification</div>
+    <div style="margin-top:18px">${[['Provider cost',naira(p.providerCost)],['Margin per request',naira(m)],['Margin rate',Math.round(m/p.customerPrice*100)+'%'],['Revenue at 100/day',naira(p.customerPrice*100)]].map(([k,v])=>`<div class="summary-row"><span>${k}</span><strong class="num">${v}</strong></div>`).join('')}</div>
+    <button class="btn btn-secondary btn-block" style="margin-top:16px" data-action="edit-product" data-product="${p.id}">${icon('edit','sm')}Edit Price</button></div></section>`}).join('')}</div>
+  <section class="card mt"><div class="card-hd"><div><h2>Average margin</h2><p>Across all products, equal volume</p></div><strong class="num" style="font-size:22px;color:var(--g)">${Math.round((rev-cost)/rev*100)}%</strong></div></section>`;
+};
+function editProduct(id){
+  const p=S.products[id];
+  openModal({title:`Edit Price — ${esc(p.short)}`,sub:esc(p.name),body:`<form class="form-grid" novalidate id="prodForm">
+    <div class="field"><label for="ppCost">Provider Cost (₦)</label><input class="input num" id="ppCost" type="number" min="0" step="10" value="${p.providerCost}" data-live="margin"><span class="err">Enter a valid cost.</span></div>
+    <div class="field"><label for="ppPrice">Customer Price (₦)</label><input class="input num" id="ppPrice" type="number" min="0" step="10" value="${p.customerPrice}" data-live="margin"><span class="err">Customer price must be higher than provider cost.</span></div>
+    <div class="field full"><label for="ppStatus">Status</label><select class="select" id="ppStatus"><option ${p.status==='Active'?'selected':''}>Active</option><option ${p.status==='Inactive'?'selected':''}>Inactive</option></select><span class="hint">Inactive products are hidden from customers.</span></div>
+    <div class="full acct-box"><div class="row"><span>Margin per verification</span><strong class="num" id="ppMargin"></strong></div><div class="row"><span>Current customer price</span><strong class="num">${naira(p.customerPrice)}</strong></div></div></form>`,
+    foot:`<button class="btn btn-secondary" data-action="close-modal">Cancel</button><button class="btn btn-primary" data-action="save-product" data-product="${id}">Save price</button>`});
+  liveMargin();
+}
+function liveMargin(){const c=+$('#ppCost').value||0,pr=+$('#ppPrice').value||0,m=pr-c;const el=$('#ppMargin');if(el){el.textContent=`${naira(m)}${pr?` (${Math.round(m/pr*100)}%)`:''}`;el.style.color=m>0?'var(--g)':'var(--err)'}}
+function saveProduct(id){
+  const p=S.products[id],c=$('#ppCost'),pr=$('#ppPrice'),st=$('#ppStatus').value;
+  const cost=Math.round(+c.value),price=Math.round(+pr.value);let ok=true;
+  c.closest('.field').classList.toggle('invalid',!(cost>=0)||c.value==='');if(!(cost>=0)||c.value==='')ok=false;
+  pr.closest('.field').classList.toggle('invalid',!(price>cost));if(!(price>cost))ok=false;
+  if(!ok)return;
+  const old=p.customerPrice,changes=[];
+  if(price!==old)changes.push(`Updated ${p.short} NIN Price (${naira(old)} → ${naira(price)})`);
+  if(cost!==p.providerCost)changes.push(`Updated ${p.short} provider cost (${naira(p.providerCost)} → ${naira(cost)})`);
+  if(st!==p.status)changes.push(`Set ${p.short} product ${st.toLowerCase()}`);
+  p.customerPrice=price;p.providerCost=cost;p.status=st;
+  changes.forEach(ch=>audit(ch,'Verification Product'));
+  save();closeModal();applySite();rerender();
+  toast(changes.length?'Price updated successfully':'No changes made',changes.length?`${p.short} is now ${naira(price)} for customers.`:'',changes.length?'success':'info');
+}
+
+/* ---------------------------- PAYMENTS / VIRTUAL ACCOUNTS ---------------------------- */
+PAGES.payments=()=>pageHead('Payment & Virtual Accounts','Payment provider connection and webhook health.',`<button class="btn btn-secondary" data-action="configure-payments">${icon('settings','sm')}Configure</button><button class="btn btn-primary" data-action="test-webhook">${icon('link','sm')}Test Webhook</button>`)+
+  `<div class="grid g4">${[['Payment Provider','Connected'],['Virtual Account Service','Connected'],['Webhook','Healthy'],['Last Webhook',ago(S.pay.lastWebhook)]].map(([k,v],i)=>`<div class="status-tile"><span>${k}</span><strong>${i<3?'<span class="health"></span>':''}${v}</strong></div>`).join('')}</div>
+  <section class="card mt"><div class="card-hd"><div><h2>Recent webhook events</h2><p>Signature-verified funding notifications</p></div></div>
+  ${table([{h:'Time'},{h:'Event'},{h:'Account'},{h:'Amount',r:true},{h:'Signature'},{h:'Status'}],S.transactions.filter(t=>t.type==='credit').slice(0,8).map(t=>{const u=userById(t.userId)||{};return [fmtDT(t.date),'<span class="num">transfer.received</span>',`<span class="num">${u.va||'—'}</span>`,`<span class="num credit">+${naira(t.amount)}</span>`,'<span class="badge b-success">Valid</span>',statusBadge('Successful')]}))}</section>`;
+PAGES['virtual-accounts']=()=>pageHead('Virtual Accounts','Dedicated funding accounts assigned to customers.',`<button class="btn btn-secondary" data-action="demo" data-msg="Bulk account provisioning runs through the virtual account provider in production.">${icon('plus','sm')}Provision accounts</button>`)+
+  `<div class="grid g3">${stat('Accounts issued',S.users.length.toLocaleString(),'bank','Demo sample')}${stat('Active',S.users.filter(u=>u.status==='Active').length,'check','Receiving transfers')}${stat('Provider',esc(S.pay.vaService),'server','Connected')}</div>
+  <section class="card mt">${table([{h:'Account Number'},{h:'Account Name'},{h:'Bank'},{h:'Customer'},{h:'Status'},{h:'Created'}],S.users.map(u=>[`<strong class="num">${u.va}</strong>`,`${esc(u.name)} - ${esc(S.site.name)}`,'Demo Bank',esc(u.email),statusBadge(u.status==='Active'?'Active':'Inactive'),fmtDate(u.joined)]))}</section>`;
+function testWebhook(b){
+  if(b){b.disabled=true;b.innerHTML=`${icon('refresh','sm')}Testing...`}
+  setTimeout(()=>{S.pay.lastWebhook=nowIso();audit('Tested payment webhook','Payment Settings');save();rerender();toast('Webhook test successful','Test event received and signature verified.')},1100);
+}
+
+/* ---------------------------- API ---------------------------- */
+PAGES.api=()=>{
+  const a=S.api;
+  const secret=(id,label,val)=>`<div class="field"><label for="${id}">${label}</label><div class="pw-wrap"><input class="input num" id="${id}" type="password" value="${esc(val)}" autocomplete="off"><button type="button" class="icon-btn" data-action="toggle-pw" data-target="${id}" aria-label="Show ${label}">${icon('eye')}</button></div></div>`;
+  return pageHead('NIN API Integration','Connection to the identity verification provider.',`<button class="btn btn-secondary" data-nav="api-logs">${icon('server','sm')}View API logs</button>`)+
+  `<div class="grid g4">${[['Provider','Connected',1],['API Status','Operational',1],['Environment',esc(a.env),0],['Last Request',S.apiLogs[0]?ago(S.apiLogs[0].time):'—',0]].map(([k,v,h])=>`<div class="status-tile"><span>${k}</span><strong>${h?'<span class="health"></span>':''}${v}</strong></div>`).join('')}</div>
+  <section class="card mt"><div class="card-hd"><div><h2>Credentials</h2><p>Stored encrypted in production. Values are masked.</p></div></div>
+  <div class="card-bd"><div class="form-grid">
+    ${secret('apiBase','API Base URL',a.baseUrl)}
+    <div class="field"><label for="apiEnv">Environment</label><select class="select" id="apiEnv">${['Production','Sandbox'].map(o=>`<option ${o===a.env?'selected':''}>${o}</option>`).join('')}</select></div>
+    ${secret('apiKey','API Key',a.key)}${secret('apiSecret','API Secret',a.secret)}
+    <div class="field"><label for="apiTimeout">Request Timeout</label><select class="select" id="apiTimeout">${['15','30','45','60'].map(o=>`<option value="${o}" ${o===a.timeout?'selected':''}>${o} seconds</option>`).join('')}</select></div>
+  </div>
+  <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex-wrap:wrap"><button class="btn btn-secondary" data-action="test-api">${icon('zap','sm')}Test Connection</button><button class="btn btn-primary" data-action="save-api">Save Settings</button></div></div></section>`;
+};
+function saveApi(){
+  const a=S.api,t=$('#apiTimeout').value,env=$('#apiEnv').value;
+  if(t!==a.timeout)audit(`Updated API request timeout (${a.timeout}s → ${t}s)`,'API Integration');
+  if(env!==a.env)audit(`Switched API environment to ${env}`,'API Integration');
+  a.baseUrl=$('#apiBase').value;a.key=$('#apiKey').value;a.secret=$('#apiSecret').value;a.timeout=t;a.env=env;
+  audit('Saved API settings','API Integration');save();rerender();toast('Settings saved','API configuration updated.');
+}
+function testApi(btn){
+  btn.disabled=true;btn.innerHTML=`${icon('refresh','sm')}Testing...`;
+  setTimeout(()=>{btn.disabled=false;btn.innerHTML=`${icon('zap','sm')}Test Connection`;audit('Tested API connection','API Integration');save();toast('Connection Successful',`Provider responded in ${(0.4+Math.random()*.5).toFixed(2)}s.`)},1200);
+}
+PAGES['api-logs']=()=>{
+  const logs=S.apiLogs,ok=logs.filter(l=>l.code===200).length,avg=logs.reduce((a,l)=>a+l.duration,0)/(logs.length||1);
+  return pageHead('API Logs','Requests sent to the NIN verification provider.')+
+  `<div class="grid g4">
+    <div class="card stat" style="grid-column:span 1"><div class="l">${icon('activity')}API Health</div><div class="v" style="display:flex;align-items:center;gap:10px;font-size:22px"><span class="health"></span>Operational</div><div class="d">All systems responding normally</div></div>
+    ${stat('Success rate',(ok/(logs.length||1)*100).toFixed(1)+'%','check','Last '+logs.length+' requests')}
+    ${stat('Avg. response',avg.toFixed(2)+'s','clock','Target under 3s')}
+    ${stat('Errors',logs.length-ok,'alert','No-record responses')}
+  </div>
+  <section class="card mt"><div class="toolbar">${searchBox('alSearch','Search reference','alog')}${selectBox('alStatus','Status',[['','All responses'],['Success','Success'],['No record','No record']],'alog')}</div><div id="alTable"></div></section>`;
+};
+POST['api-logs']=()=>FILTERS.alog();
+
+/* ---------------------------- REPORTS ---------------------------- */
+PAGES.reports=()=>{
+  const rows=Object.values(S.products).map(p=>{const vs=S.verifications.filter(v=>v.product===p.id&&v.charged);const rev=vs.reduce((a,v)=>a+v.amount,0),cost=vs.reduce((a,v)=>a+v.cost,0);return {p,n:vs.length,rev,cost,m:rev-cost}});
+  const tot=rows.reduce((a,r)=>({n:a.n+r.n,rev:a.rev+r.rev,cost:a.cost+r.cost,m:a.m+r.m}),{n:0,rev:0,cost:0,m:0});
+  return pageHead('Reports','Revenue, cost and margin from the demo dataset.',`<button class="btn btn-secondary" data-action="export-verifications">${icon('download','sm')}Verifications CSV</button><button class="btn btn-primary" data-action="export-report">${icon('download','sm')}Download summary</button>`)+
+  `<div class="grid g4 keep2">${stat('Paid verifications',tot.n,'verify')}${stat('Revenue',naira(tot.rev),'trendUp')}${stat('Provider cost',naira(tot.cost),'server')}${stat('Gross margin',naira(tot.m),'tag',`<span class="up">${tot.rev?Math.round(tot.m/tot.rev*100):0}%</span>`)}</div>
+  <section class="card mt"><div class="card-hd"><div><h2>By product</h2><p>All recorded verifications</p></div></div>
+  ${table([{h:'Product'},{h:'Verifications',r:true},{h:'Revenue',r:true},{h:'Provider Cost',r:true},{h:'Margin',r:true}],[...rows.map(r=>[esc(r.p.name),`<span class="num">${r.n}</span>`,`<span class="num">${naira(r.rev)}</span>`,`<span class="num">${naira(r.cost)}</span>`,`<span class="num up">${naira(r.m)}</span>`]),['<strong>Total</strong>',`<strong class="num">${tot.n}</strong>`,`<strong class="num">${naira(tot.rev)}</strong>`,`<strong class="num">${naira(tot.cost)}</strong>`,`<strong class="num up">${naira(tot.m)}</strong>`]])}</section>`;
+};
+function toCSV(rows){return rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n')}
+
+/* ---------------------------- NOTIFICATIONS (ADMIN) ---------------------------- */
+PAGES['admin-notifications']=()=>pageHead('Notifications','Send announcements to customers.')+
+  `<div class="grid g-main"><section class="card"><div class="card-hd"><h2>New announcement</h2></div><div class="card-bd"><form class="form-grid" novalidate id="bcForm">
+    <div class="field full"><label for="bcAud">Audience</label><select class="select" id="bcAud"><option value="all">All active users</option><option value="low">Users with balance below ₦500</option></select></div>
+    <div class="field full"><label for="bcTitle">Title</label><input class="input" id="bcTitle" maxlength="60" placeholder="e.g. Scheduled maintenance"><span class="err">Enter a title.</span></div>
+    <div class="field full"><label for="bcBody">Message</label><textarea class="input" id="bcBody" rows="4" style="height:auto;padding:12px 14px;resize:vertical" maxlength="240" placeholder="Write a short, clear message"></textarea><span class="err">Enter a message.</span></div>
+  </form><div style="display:flex;justify-content:flex-end;margin-top:18px"><button class="btn btn-primary" data-action="send-broadcast">${icon('send','sm')}Send announcement</button></div></div></section>
+  <section class="card"><div class="card-hd"><h2>Sent</h2></div>${S.broadcasts.length?S.broadcasts.map(b=>`<div class="list-row"><div class="ico g">${icon('bell')}</div><div class="grow"><strong>${esc(b.title)}</strong><span>${b.count} recipients · ${ago(b.date)}</span></div></div>`).join(''):emptyState('No announcements yet','Messages you send appear here.','bell')}</section></div>`;
+function sendBroadcast(){
+  const t=$('#bcTitle'),b=$('#bcBody'),aud=$('#bcAud').value;let ok=true;
+  [t,b].forEach(el=>{const bad=!el.value.trim();el.closest('.field').classList.toggle('invalid',bad);if(bad)ok=false});if(!ok)return;
+  const targets=S.users.filter(u=>u.status==='Active'&&(aud==='all'||u.balance<500));
+  targets.forEach(u=>notify(u.id,t.value.trim(),b.value.trim(),'broadcast'));
+  S.broadcasts.unshift({title:t.value.trim(),count:targets.length,date:nowIso()});
+  audit(`Sent announcement “${t.value.trim()}”`,'Notifications');save();rerender();
+  toast('Announcement sent',`Delivered to ${targets.length} users.`);
+}
+
+/* ---------------------------- AUDIT ---------------------------- */
+PAGES.audit=()=>pageHead('Audit Logs','A record of administrative actions.')+
+  `<section class="card"><div class="toolbar">${searchBox('auSearch','Search action or resource','audit')}${selectBox('auStatus','Status',[['','All statuses'],'Successful','Failed'],'audit')}</div><div id="auTable"></div></section>`;
+POST.audit=()=>FILTERS.audit();
+
+/* ---------------------------- WEBSITE SETTINGS ---------------------------- */
+PAGES.website=()=>{
+  const s=S.site,f=(id,l,k,full,hint)=>`<div class="field ${full?'full':''}"><label for="${id}">${l}</label><input class="input" id="${id}" data-key="${k}" value="${esc(s[k])}">${hint?`<span class="hint">${hint}</span>`:''}<span class="err">This field is required.</span></div>`;
+  return pageHead('Website Settings','Edit the public website content. Changes publish immediately.',`<button class="btn btn-secondary" data-action="preview-site">${icon('globe','sm')}Preview website</button>`)+
+  `<section class="card"><div class="card-hd"><div><h2>Business details</h2><p>Shown in the header, contact section and footer</p></div></div><div class="card-bd"><form class="form-grid" id="siteForm" novalidate>
+    ${f('sName','Business Name','name',true)}${f('sPhone','Phone','phone')}${f('sWa','WhatsApp','whatsapp',false,'Used for the WhatsApp chat button')}${f('sAddr','Address','address',true)}
+  </form></div></section>
+  <section class="card mt"><div class="card-hd"><div><h2>Homepage hero</h2><p>The first thing visitors see</p></div></div><div class="card-bd"><form class="form-grid" novalidate>
+    ${f('sHero','Hero Title','heroTitle',true)}
+    <div class="field full"><label for="sHeroCopy">Supporting text</label><textarea class="input" id="sHeroCopy" data-key="heroCopy" rows="3" style="height:auto;padding:12px 14px;resize:vertical">${esc(s.heroCopy)}</textarea></div>
+  </form><div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px"><button class="btn btn-primary" data-action="save-site">Save changes</button></div></div></section>`;
+};
+function saveSite(){
+  let ok=true;const vals={};
+  $$('#main [data-key]').forEach(el=>{const v=el.value.trim();const bad=!v;el.closest('.field').classList.toggle('invalid',bad);if(bad)ok=false;vals[el.dataset.key]=v});
+  if(!ok){toast('Some fields are empty','Fill in all required fields.','warn');return}
+  const changed=Object.keys(vals).filter(k=>vals[k]!==S.site[k]);
+  Object.assign(S.site,vals);
+  if(changed.length)audit(`Updated website ${changed.map(k=>({name:'business name',phone:'phone',whatsapp:'WhatsApp',address:'address',heroTitle:'hero title',heroCopy:'hero text'}[k])).join(', ')}`,'Website Settings');
+  save();applySite();rerender();toast(changed.length?'Settings saved':'No changes made',changed.length?'The public website has been updated.':'',changed.length?'success':'info');
+}
+function previewSite(){
+  showView('landing');
+  let bar=$('#previewBar');
+  if(!bar){bar=document.createElement('div');bar.id='previewBar';bar.style.cssText='position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;background:#0E2A1C;color:#fff;border-radius:12px;padding:8px 8px 8px 16px;display:flex;align-items:center;gap:14px;font-size:14px;box-shadow:0 16px 32px -12px rgba(14,42,28,.5);white-space:nowrap';bar.innerHTML=`<span>Previewing website</span><button class="btn btn-sm btn-on-dark" data-action="exit-preview">${icon('arrowLeft','sm')}Back to admin</button>`;document.body.appendChild(bar)}
+  bar.hidden=false;
+}
+function exitPreview(){const b=$('#previewBar');if(b)b.hidden=true;enterApp()}
+
+/* ---------------------------- ADMIN SETTINGS ---------------------------- */
+PAGES['admin-settings']=()=>{
+  const a=S.admin;
+  return pageHead('Admin Settings','Your administrator account and console security.')+
+  `<div class="grid g2"><section class="card"><div class="card-hd"><h2>Administrator</h2></div><div class="card-bd"><form class="form-grid" novalidate>
+    <div class="field full"><label for="adName">Display name</label><input class="input" id="adName" value="${esc(a.name)}"><span class="err">Enter a name.</span></div>
+    <div class="field full"><label for="adEmail">Email</label><input class="input" id="adEmail" value="${esc(a.email)}" readonly><span class="hint">The demo admin email cannot be changed.</span></div>
+    <div class="field full"><label for="adTimeout">Session timeout</label><select class="select" id="adTimeout">${['15','30','60'].map(o=>`<option value="${o}" ${o===a.timeout?'selected':''}>${o} minutes of inactivity</option>`).join('')}</select></div>
+  </form><div style="display:flex;justify-content:flex-end;margin-top:18px"><button class="btn btn-primary" data-action="save-admin">Save changes</button></div></div></section>
+  <section class="card"><div class="card-hd"><h2>Security</h2></div>
+    <div class="settings-row"><div><strong>Two-factor authentication</strong><span>Require a code at every admin sign-in</span></div><label class="switch"><input type="checkbox" id="ad2fa" ${a.twofa?'checked':''} aria-label="Two-factor authentication"><span></span></label></div>
+    <div class="settings-row"><div><strong>Password</strong><span>Change your admin password</span></div><button class="btn btn-secondary btn-sm" data-action="change-password">Change</button></div>
+    <div class="settings-row"><div><strong>Reset demo data</strong><span>Restore the original presentation state</span></div><button class="btn btn-danger btn-sm" data-action="reset-demo">Reset</button></div>
+  </section></div>`;
+};
+function saveAdmin(){
+  const n=$('#adName');if(!n.value.trim()){n.closest('.field').classList.add('invalid');return}
+  S.admin.name=n.value.trim();S.admin.timeout=$('#adTimeout').value;audit('Updated admin settings','Admin Account');save();rerender();toast('Settings saved');
+}
+
+/* ======================================================================
+   FILTERS (search / status / date)
+   ====================================================================== */
+const val=id=>{const el=$('#'+id);return el?el.value.trim().toLowerCase():''};
+const FILTERS={
+  history(){
+    const q=val('hSearch'),svc=val('hSvc'),st=val('hStatus'),dr=val('hDate');
+    const all=userVer(me());
+    const list=all.filter(v=>(!q||v.ref.toLowerCase().includes(q)||v.nin.includes(q))&&(!svc||v.product===svc)&&(!st||v.status.toLowerCase()===st)&&dateMatch(v.date,dr));
+    $('#hTable').innerHTML=all.length?table([{h:'Reference'},{h:'Service'},{h:'NIN'},{h:'Amount',r:true},{h:'Status'},{h:'Date'},{h:'Action',act:true}],list.map(v=>[`<span class="ref num">${v.ref}</span>`,esc(S.products[v.product].short),`<span class="num">${maskNin(v.nin)}</span>`,amountCell(v),statusBadge(v.status),fmtDate(v.date),`<button class="btn btn-ghost btn-sm" data-action="view-verification" data-ref="${v.ref}">${icon('eye','sm')}View</button>`])):emptyState('No verifications yet','Verify your first NIN to build your history.','verify',`<button class="btn btn-primary btn-sm" data-nav="verify">Verify NIN</button>`);
+    $('#hFoot').textContent=`Showing ${list.length} of ${all.length} verifications`;
+  },
+  transactions(){
+    const q=val('tSearch'),ty=val('tType'),dr=val('tDate');
+    const list=userTx(me()).filter(t=>(!q||t.desc.toLowerCase().includes(q)||t.ref.toLowerCase().includes(q))&&(!ty||t.type===ty)&&dateMatch(t.date,dr));
+    $('#tTable').innerHTML=txTable(list);
+  },
+  users(){
+    const q=val('uSearch'),st=val('uStatus');
+    const list=S.users.filter(u=>(!q||u.name.toLowerCase().includes(q)||u.email.toLowerCase().includes(q)||u.phone.replace(/\s/g,'').includes(q.replace(/\s/g,'')))&&(!st||u.status.toLowerCase()===st));
+    $('#uTable').innerHTML=table([{h:'User'},{h:'Email'},{h:'Wallet Balance',r:true},{h:'Verifications',r:true},{h:'Status'},{h:'Joined'},{h:'Action',act:true}],list.map(u=>{const s=userStats(u);return [`<div class="cell-user"><span class="avatar">${initials(u.name)}</span><span>${esc(u.name)}<small class="num">${esc(u.phone)}</small></span></div>`,esc(u.email),`<span class="num">${naira(u.balance)}</span>`,`<span class="num">${s.count}</span>`,statusBadge(u.status),fmtDate(u.joined),`<span style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" data-action="admin-view-user" data-user="${u.id}">${icon('eye','sm')}View</button>${u.status==='Active'?`<button class="btn btn-ghost btn-sm" data-action="toggle-user" data-user="${u.id}" aria-label="Suspend ${esc(u.name)}" data-tip="Suspend">${icon('ban','sm')}</button>`:`<button class="btn btn-soft btn-sm" data-action="toggle-user" data-user="${u.id}">Activate</button>`}</span>`]}));
+    $('#uFoot').textContent=`Showing ${list.length} of ${S.users.length} sample accounts`;
+  },
+  averif(){
+    const r=val('avRef'),n=val('avNin'),p=val('avProd'),st=val('avStatus'),d=$('#avDate')?$('#avDate').value:'';
+    const list=S.verifications.filter(v=>(!r||v.ref.toLowerCase().includes(r))&&(!n||v.nin.includes(n))&&(!p||v.product===p)&&(!st||v.status.toLowerCase()===st)&&(!d||v.date.slice(0,10)===d));
+    $('#avTable').innerHTML=adminVerTable(list);$('#avFoot').textContent=`Showing ${list.length} of ${S.verifications.length} verifications`;
+  },
+  atx(){
+    const q=val('atSearch'),ty=val('atType');
+    const list=S.transactions.filter(t=>{const u=userById(t.userId)||{name:''};return (!q||t.desc.toLowerCase().includes(q)||t.ref.toLowerCase().includes(q)||u.name.toLowerCase().includes(q))&&(!ty||t.type===ty)});
+    $('#atTable').innerHTML=txTable(list.slice(0,60),true);$('#atFoot').textContent=`Showing ${Math.min(60,list.length)} of ${list.length} transactions`;
+  },
+  alog(){
+    const q=val('alSearch'),st=val('alStatus');
+    const list=S.apiLogs.filter(l=>(!q||l.ref.toLowerCase().includes(q))&&(!st||l.status.toLowerCase()===st));
+    $('#alTable').innerHTML=table([{h:'Time'},{h:'Reference'},{h:'Product'},{h:'Response'},{h:'Status'},{h:'Duration',r:true}],list.map(l=>[`<span class="num">${fmtTimeS(l.time)}</span> <span class="muted" style="font-size:12.5px">${fmtDate(l.time)}</span>`,`<span class="ref num">${l.ref}</span>`,esc(S.products[l.product].short),`<span class="num" style="font-weight:600;color:${l.code===200?'var(--g)':'var(--err)'}">${l.code}</span>`,statusBadge(l.status),`<span class="num">${l.duration.toFixed(2)}s</span>`]));
+  },
+  audit(){
+    const q=val('auSearch'),st=val('auStatus');
+    const list=S.audit.filter(a=>(!q||a.action.toLowerCase().includes(q)||a.resource.toLowerCase().includes(q))&&(!st||a.status.toLowerCase()===st));
+    $('#auTable').innerHTML=table([{h:'Admin'},{h:'Action'},{h:'Resource'},{h:'IP'},{h:'Time'},{h:'Status'}],list.map(a=>[`<div class="cell-user"><span class="avatar ${a.admin==='Unknown'?'':'admin'}">${a.admin==='Unknown'?'?':'AD'}</span>${esc(a.admin)}</div>`,`<span style="white-space:normal;display:inline-block;max-width:340px">${esc(a.action)}</span>`,esc(a.resource),`<span class="num">${a.ip}</span>`,fmtDT(a.time),statusBadge(a.status)]));
+  }
+};
+
+/* ======================================================================
+   EVENTS
+   ====================================================================== */
+function helpModal(){
+  const admin=S.session&&S.session.role==='admin';
+  const steps=admin?['Review the overview: users, verifications, revenue and margin','Open Verification Products and change the Basic price','Sign out and open the User Demo to see the new price','Check Audit Logs to see every change recorded']:['Fund the wallet (use Simulate ₦1,000 Funding)','Open Verify NIN, choose a service and enter any 11 digits','Confirm the fee and view the demo result','Download or print the report, then check Transactions'];
+  openModal({title:'Presentation guide',sub:'Suggested demo flow',body:`<ol style="padding-left:20px;display:grid;gap:10px">${steps.map(s=>`<li>${s}</li>`).join('')}</ol><div class="note" style="margin-top:18px">${icon('info')}<span>All data is fictional and stored only in this browser. Reset it anytime from Settings.</span></div>`,foot:'<button class="btn btn-primary" data-action="close-modal">Got it</button>'});
+}
+const ACTIONS={
+  'go-login':()=>showAuth('login'),
+  'go-register':()=>showAuth('register'),
+  'go-home':()=>{showView('landing')},
+  'toggle-mobile-nav':b=>{const n=$('#mobileNav'),o=n.classList.toggle('open');b.setAttribute('aria-expanded',String(o))},
+  privacy:()=>openLegal('privacy'),terms:()=>openLegal('terms'),
+  'toggle-pw':b=>{const i=$('#'+b.dataset.target);const show=i.type==='password';i.type=show?'text':'password';b.innerHTML=icon(show?'eyeOff':'eye');b.setAttribute('aria-label',(show?'Hide':'Show')+' password')},
+  demo:b=>demoToast(b.dataset.msg),
+  'demo-login':b=>{const u=b.dataset.role==='admin';$('#loginEmail').value=u?S.admin.email:'user@weverifyeverything.test';$('#loginPass').value=u?S.admin.password:(userById('u1')||{}).password||'User@123';login($('#loginEmail').value,$('#loginPass').value)},
+  'landing-verify':b=>{pendingProduct=b.dataset.product;showAuth('login');toast('Sign in to continue',`${S.products[b.dataset.product].name} selected.`,'info')},
+  logout:()=>logout(),
+  'open-sidebar':()=>openSidebar(),'close-sidebar':()=>closeSidebar(),
+  help:()=>helpModal(),
+  'open-notifs':()=>go(S.session.role==='admin'?'admin-notifications':'notifications'),
+  'close-modal':()=>closeModal(),
+  'select-product':b=>{VS.product=b.dataset.product;updateVerifyUI()},
+  'quick-verify':b=>{VS.product=b.dataset.product;VS.result=null;go('verify');setTimeout(()=>{const i=$('#ninInput');i&&i.focus()},60)},
+  'verify-submit':()=>submitVerify(),
+  'confirm-verify':()=>runVerification(),
+  'verify-another':()=>{resetVerify();rerender();setTimeout(()=>{const i=$('#ninInput');i&&i.focus()},60)},
+  'fund-wallet':()=>openFundModal(),
+  'copy-account':()=>copyText((me()||{}).va||'0123456789'),
+  'simulate-funding':()=>simulateFunding(),
+  'view-verification':b=>viewVerification(b.dataset.ref),
+  'download-report':b=>printReport(b.dataset.ref,true),
+  'print-report':b=>printReport(b.dataset.ref,false),
+  'edit-profile':()=>editProfile(),'save-profile':()=>saveProfile(),
+  'change-password':()=>changePassword(),'save-password':()=>savePassword(),
+  'mark-all-read':()=>{S.notifications.forEach(n=>{if(n.userId===me().id)n.read=true});save();rerender();toast('All notifications marked as read')},
+  'reset-demo':()=>resetDemo(),
+  'confirm-reset':()=>{try{localStorage.removeItem(STORAGE_KEY)}catch(e){}S=seedState();save();resetVerify();closeModal();applySite();showView('landing');toast('Demo data reset','Everything is back to the original state.')},
+  'admin-view-user':b=>openUserDetail(b.dataset.user,b.dataset.tab),
+  'user-tab':b=>openUserDetail(b.dataset.user,b.dataset.tab),
+  'toggle-user':b=>toggleUser(b.dataset.user),
+  'edit-product':b=>editProduct(b.dataset.product),'save-product':b=>saveProduct(b.dataset.product),
+  'save-api':()=>saveApi(),'test-api':b=>testApi(b),
+  'configure-payments':()=>demoToast('Provider credentials and settlement accounts are configured with the payment partner in production.'),
+  'test-webhook':b=>testWebhook(b),
+  'save-site':()=>saveSite(),'preview-site':()=>previewSite(),'exit-preview':()=>exitPreview(),
+  'send-broadcast':()=>sendBroadcast(),'save-admin':()=>saveAdmin(),
+  'export-users':()=>{downloadFile('demo-users.csv',toCSV([['Name','Email','Phone','Wallet Balance','Status','Joined'],...S.users.map(u=>[u.name,u.email,u.phone,u.balance,u.status,fmtDate(u.joined)])]),'text/csv');toast('Export ready','demo-users.csv downloaded.')},
+  'export-verifications':()=>{downloadFile('demo-verifications.csv',toCSV([['Reference','User','Product','NIN (masked)','Amount','Status','Date'],...S.verifications.map(v=>[v.ref,(userById(v.userId)||{}).name||'',S.products[v.product].short,maskNin(v.nin),v.charged?v.amount:0,v.status,fmtDT(v.date)])]),'text/csv');toast('Export ready','demo-verifications.csv downloaded.')},
+  'export-transactions':()=>{downloadFile('demo-transactions.csv',toCSV([['Date','User','Description','Reference','Type','Amount','Status'],...S.transactions.map(t=>[fmtDT(t.date),(userById(t.userId)||{}).name||'',t.desc,t.ref,t.type,t.amount,t.status])]),'text/csv');toast('Export ready','demo-transactions.csv downloaded.')},
+  'export-report':()=>{const r=Object.values(S.products).map(p=>{const vs=S.verifications.filter(v=>v.product===p.id&&v.charged);const rev=vs.reduce((a,v)=>a+v.amount,0),c=vs.reduce((a,v)=>a+v.cost,0);return [p.name,vs.length,rev,c,rev-c]});downloadFile('demo-revenue-summary.csv',toCSV([['Product','Verifications','Revenue','Provider Cost','Margin'],...r]),'text/csv');toast('Export ready','demo-revenue-summary.csv downloaded.')}
+};
+document.addEventListener('click',e=>{
+  const nav=e.target.closest('[data-nav]');
+  if(nav){e.preventDefault();if(nav.dataset.nav==='verify'&&S.session&&S.session.page!=='verify'&&VS.result)resetVerify();go(nav.dataset.nav);if($('#modalRoot').classList.contains('open'))closeModal(true);return}
+  const a=e.target.closest('[data-action]');
+  if(a&&ACTIONS[a.dataset.action]){e.preventDefault();ACTIONS[a.dataset.action](a,e);return}
+  if(e.target.closest('[data-close-nav]'))closeMobileNav();
+});
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.id==='ninInput'){const d=t.value.replace(/\D/g,'').slice(0,11);if(t.value!==d)t.value=d;VS.nin=d;$('#ninField').classList.remove('invalid');updateVerifyUI();return}
+  if(t.dataset.filter&&FILTERS[t.dataset.filter]){FILTERS[t.dataset.filter]();return}
+  if(t.dataset.live==='margin'){liveMargin();return}
+  const f=t.closest('.field.invalid');if(f)f.classList.remove('invalid');
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.filter&&FILTERS[t.dataset.filter])FILTERS[t.dataset.filter]();
+  if(t.dataset.pref){const id=me().id;S.prefs[id]=S.prefs[id]||{email:true,sms:false,low:true};S.prefs[id][t.dataset.pref]=t.checked;save();toast('Settings saved')}
+  if(t.id==='ad2fa'){S.admin.twofa=t.checked;audit(`${t.checked?'Enabled':'Disabled'} two-factor authentication`,'Admin Account');save();toast('Settings saved',`Two-factor authentication ${t.checked?'enabled':'disabled'}.`)}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='ninInput'){e.preventDefault();submitVerify()}if(e.key==='Escape'&&$('#sidebar').classList.contains('open'))closeSidebar()});
+$('#loginForm').addEventListener('submit',e=>{e.preventDefault();$('#loginPass').closest('.field').classList.remove('invalid');login($('#loginEmail').value,$('#loginPass').value)});
+$('#registerForm').addEventListener('submit',handleRegister);
+window.addEventListener('resize',()=>{if(window.innerWidth>980){closeSidebar();closeMobileNav()}});
+
+/* ======================================================================
+   INIT
+   ====================================================================== */
+hydrateDecor();hydrateIcons();applySite();
+if(S.session&&(S.session.role==='admin'||me()))enterApp();else{S.session=null;showView('landing')}
+window.__WVE={get state(){return S},go,login};
+})();
+</script>
+</body>
+</html>
